@@ -1,0 +1,87 @@
+package edu.virginia.sde.reviews;
+import jakarta.persistence.*;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import java.util.List;
+
+@Entity
+@Table(name = "reviews")
+public class Review {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    @Column(name = "timestamp", nullable = false)
+    private String timestamp;
+    @Column(name = "rating", nullable = false)
+    private int rating;
+    @Column(name = "comment")
+    private String comment;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "course_name")
+    private Course course;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "username")
+    private Profile user;
+
+    protected Review() {}
+
+    public Review(Profile user, Course course, int rating, String comment, String timestamp) {
+        this.timestamp = timestamp;
+        this.rating = rating;
+        this.comment = comment;
+        this.course = course;
+        this.user = user;
+    }
+
+    public Profile getUser() {
+        return user;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Review)) {
+            return false;
+        }
+        Review review = (Review)obj;
+        return review.getRating() == this.rating && review.getComment().equals(this.comment) &&  review.getTimestamp().equals(this.timestamp) && review.getUser().getUsername().equals(this.user.getUsername()) && review.getCourse().getCourseName().equals(this.course.getCourseName());
+    }
+
+    public static void insertReview(Review review) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.persist(review);
+        transaction.commit();
+        session.close();
+    }
+
+    public static List<Review> getReviewsFromCourse(Course course) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        String hql = "SELECT e FROM Review e WHERE e.course=: course";
+
+        TypedQuery<Review> query = session.createQuery(hql, Review.class);
+        query.setParameter("course", course);
+
+        List<Review> reviews = query.getResultList();
+        session.close();
+        return reviews;
+    }
+}
