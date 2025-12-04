@@ -9,11 +9,11 @@ import java.util.List;
 public class Profile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name = "username")
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     protected Profile() {}
