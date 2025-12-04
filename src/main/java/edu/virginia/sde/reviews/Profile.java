@@ -32,7 +32,7 @@ public class Profile {
     }
 
     public static void insertProfile(Profile profile) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         session.persist(profile);
         session.getTransaction().commit();
@@ -44,7 +44,7 @@ public class Profile {
             return false;
         }
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
 
         String hql = "SELECT e FROM Profile e WHERE e.username=:username AND e.password=:password";
