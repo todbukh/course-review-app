@@ -51,7 +51,6 @@ public class Course {
         session.beginTransaction();
         session.persist(course);
         session.getTransaction().commit();
-        session.close();
     }
 
     public static boolean courseExists(Course course) {
