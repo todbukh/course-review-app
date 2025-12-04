@@ -67,4 +67,45 @@ public class ReviewTest {
 
         assertTrue(Review.getReviewsFromCourse(course).isEmpty());
     }
+
+    @Test
+    public void getReviewFromCourse_throwsException() {
+        assertThrows(IllegalStateException.class, () -> {Review.getReviewsFromCourse(new Course("MATH", 2550, "Intro"));});
+    }
+
+    @Test
+    public void getAverageRating() {
+        Course course = new Course("CS", 1550, "Intro");
+        Profile profile1 = new Profile("user", "pass");
+        Profile profile2 = new Profile("user1", "pass");
+        Profile profile3 = new Profile("user2", "pass");
+        Course.insertCourse(course);
+        Profile.insertProfile(profile1);
+        Profile.insertProfile(profile2);
+        Profile.insertProfile(profile3);
+
+        Review review1 = new Review(
+                profile1,
+                course,
+                5,
+                "great",
+                new Timestamp(System.currentTimeMillis()).toString());
+        Review review2 = new Review(
+                profile2,
+                course,
+                1,
+                "horrible",
+                new Timestamp(System.currentTimeMillis()).toString());
+        Review review3 = new Review(
+                profile3,
+                course,
+                3,
+                "okay",
+                new Timestamp(System.currentTimeMillis()).toString());
+
+        Review.insertReview(review1);
+        Review.insertReview(review2);
+        Review.insertReview(review3);
+        assertEquals(3.0, Review.getAverageRating(course));
+    }
 }
