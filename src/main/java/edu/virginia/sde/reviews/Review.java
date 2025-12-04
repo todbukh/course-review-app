@@ -71,7 +71,7 @@ public class Review {
         session.close();
     }
 
-    public static List<Review> getReviewsFromCourse(Course course) {
+    protected static List<Review> getReviewsFromCourse(Course course) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
 
@@ -83,5 +83,17 @@ public class Review {
         List<Review> reviews = query.getResultList();
         session.close();
         return reviews;
+    }
+    public static double getAverageRating(Course course) throws IllegalStateException {
+        if (Course.courseExists(course)) {
+            List<Review> courseReviews = Review.getReviewsFromCourse(course);
+
+            return courseReviews.stream()
+                    .mapToInt(Review::getRating)
+                    .average()
+                    .orElse(0.0);
+        } else {
+            throw new IllegalStateException("Course must be in database!");
+        }
     }
 }
