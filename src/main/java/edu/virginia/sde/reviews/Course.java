@@ -73,4 +73,13 @@ public class Course {
 
         return !(profiles.isEmpty());
     }
+
+    public static List<Course> getCourseList() {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        String hql = "SELECT e FROM Course e";
+        TypedQuery<Course> query = session.createQuery(hql, Course.class);
+        return query.getResultList();
+    }
 }
