@@ -1,7 +1,7 @@
 # Homework 6 - Course Review Application
 
 ## Authors
-1) Name, netid, [GitHub profile name]
+1) Todd Burged, jfx8vc, [todbukh]
 2) Name, netid, [GitHub profile name]
 3) Name, netid, [GitHub profile name]
 4) Name, netid, [GitHub profile name]
@@ -14,11 +14,10 @@
 
 List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
 
-### [Author 1 - replace this with their name]
+### Todd Burged
 
-* Author 1 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* ```ProfileService.java```
+* ```LoginFailedException.java```
 
 ### [Author 2 - replace this with their name]
 
