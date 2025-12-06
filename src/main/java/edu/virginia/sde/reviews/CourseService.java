@@ -9,6 +9,9 @@ import java.util.*;
  */
 public class CourseService {
 
+    public List<Course> getAllCourses() {
+        return Course.getCourseList();
+    }
     public List<Course> searchCourses(String subject, String courseNumberStr, String title ) {
         List<Course> allCourses = Course.getCourseList();
         return allCourses.stream()
