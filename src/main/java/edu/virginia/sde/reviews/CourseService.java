@@ -1,7 +1,4 @@
 package edu.virginia.sde.reviews;
-
-import org.hibernate.Session;
-
 import java.util.*;
 /**
  * Handles business logic for Course Search Scene
@@ -34,7 +31,17 @@ public class CourseService {
         Course.insertCourse(newCourse);
         return true;
     }
-    public List<Course> searchCourses(String subject, String courseNumberStr, String title ) {
+
+    /**
+     * Searches for courses that match a specified subject mnemonic, course number, and/or titleSubstring substring.
+     * <i>Example</i>: you can search for CS courses that contain the substring "intro" (case-insensitive)
+     * by calling {@code searchCourses("CS", null, "Intro")}.
+     * @param subject subject mnemonic query
+     * @param courseNumberStr course Number query
+     * @param titleSubstring substring to query from course titles
+     * @return a List of courses that match the specified criteria
+     */
+    public List<Course> searchCourses(String subject, String courseNumberStr, String titleSubstring ) {
         List<Course> allCourses = Course.getCourseList();
         return allCourses.stream()
                 .filter(c -> {
@@ -52,8 +59,8 @@ public class CourseService {
                     }
                 })
                 .filter(c -> {
-                        if (title == null || title.isBlank()) return true;
-                        return c.getCourseName().toLowerCase().contains(title.strip().toLowerCase());
+                        if (titleSubstring == null || titleSubstring.isBlank()) return true;
+                        return c.getCourseName().toLowerCase().contains(titleSubstring.strip().toLowerCase());
                 })
                 .toList();
     }
