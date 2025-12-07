@@ -4,6 +4,11 @@ import java.util.*;
  * Handles business logic for Course Search Scene
  */
 public class CourseService {
+    /**
+     * Retrieves all courses currently in the catalog
+     * @return a List of all courses in the database
+     * @see Course#getCourseList()
+     */
     public List<Course> getAllCourses() {
         return Course.getCourseList();
     }
