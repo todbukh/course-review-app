@@ -20,15 +20,16 @@ public class ProfileService {
      * Creates a new profile with a specified username and password.
      * @param username must be unique
      * @param password must be at least 8 characters in length.
-     * @throws RuntimeException if username exists
+     * @return {@code true} if profile was successfully added, or {@code false} if username is already taken
      * @throws IllegalArgumentException if password is invalid.
      */
-    public void createProfile(String username, String password) {
+    public boolean createProfile(String username, String password) {
         // FIXME: need a method to check for username in DB
-        // if username exists throw a runtime exception
+        // if username exists return false
         validatePassword(password);
         Profile profile = new Profile(username, password);
         Profile.insertProfile(profile);
+        return true;
     }
     /**
      * Checks if a password is valid.
