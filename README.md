@@ -18,6 +18,7 @@ List the primary contributions of each author. It is recommended to update this 
 
 * ```ProfileService.java```
 * ```LoginFailedException.java```
+* ```CourseService.java```
 
 ### [Author 2 - replace this with their name]
 
