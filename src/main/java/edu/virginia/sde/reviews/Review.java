@@ -24,11 +24,11 @@ public class Review {
     private Course course;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "username")
-    private Profile user;
+    private User user;
 
     protected Review() {}
 
-    public Review(Profile user, Course course, int rating, String comment, String timestamp) {
+    public Review(User user, Course course, int rating, String comment, String timestamp) {
         this.timestamp = timestamp;
         this.rating = rating;
         this.comment = comment;
@@ -36,7 +36,7 @@ public class Review {
         this.user = user;
     }
 
-    public Profile getUser() {
+    public User getUser() {
         return user;
     }
 
@@ -80,20 +80,21 @@ public class Review {
         }
     }
 
-    public static void updateReview(Review initialReview, Review updatedReview) {
-        deleteReview(initialReview);
-        insertReview(updatedReview);
+
+    public static void updateReview(Review newReview) {
+        deleteReview(newReview.getCourse(), newReview.getUser());
+        insertReview(newReview);
     }
 
-    public static void deleteReview(Review review) {
+    public static void deleteReview(Course course, User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
 
             String hql = "DELETE FROM Review e WHERE e.course=: course AND e.user=: user";
             MutationQuery query = session.createMutationQuery(hql);
-            query.setParameter("course", review.getCourse());
-            query.setParameter("user", review.getUser());
+            query.setParameter("course", course);
+            query.setParameter("user", user);
             query.executeUpdate();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -102,7 +103,7 @@ public class Review {
         }
     }
 
-    public static List<Review> getReviewsFromProfile(Profile profile) {
+    public static List<Review> getReviewsFromProfile(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Review> reviews = new ArrayList<Review>();
         try {
@@ -111,7 +112,7 @@ public class Review {
             String hql = "SELECT e FROM Review e WHERE e.user=: user";
 
             TypedQuery<Review> query = session.createQuery(hql, Review.class);
-            query.setParameter("user", profile);
+            query.setParameter("user", user);
 
             reviews = query.getResultList();
         } catch (Exception e) {
@@ -123,7 +124,7 @@ public class Review {
         return reviews;
     }
 
-    public static Review getReviewFromCourseAndProfile(Course course, Profile profile) throws ReviewDoesNotExistException {
+    public static Review getReviewFromCourseAndProfile(Course course, User user) throws ReviewDoesNotExistException {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List <Review> reviews = null;
         try {
@@ -133,7 +134,7 @@ public class Review {
 
             TypedQuery<Review> query = session.createQuery(hql, Review.class);
             query.setParameter("course", course);
-            query.setParameter("user", profile);
+            query.setParameter("user", user);
 
             reviews = query.getResultList();
             if (reviews.isEmpty()) {

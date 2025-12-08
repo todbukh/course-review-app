@@ -73,24 +73,24 @@ public class Course {
             return false;
         }
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Profile> profiles = new ArrayList<Profile>();
+        List<User> users = new ArrayList<User>();
         try {
             session.beginTransaction();
 
             String hql = "SELECT e FROM Course e WHERE e.subject=:subject AND e.courseName=:course_name AND e.courseNumber=:course_number";
 
-            TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
+            TypedQuery<User> query = session.createQuery(hql, User.class);
             query.setParameter("subject", course.getSubject());
             query.setParameter("course_name", course.getCourseName());
             query.setParameter("course_number", course.getCourseNumber());
-            profiles = query.getResultList();
+            users = query.getResultList();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
 
-        return !(profiles.isEmpty());
+        return !(users.isEmpty());
     }
 
     public static List<Course> getCourseList() {

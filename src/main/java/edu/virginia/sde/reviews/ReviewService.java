@@ -18,15 +18,15 @@ public class ReviewService {
         FAILED_USER_ALREADY_REVIEWED,
         SUCCESS
     }
-    private final Profile loggedProfile;
+    private final User loggedUser;
 
     /**
      * Constructs a new ReviewService instance.
      *
-     * @param loggedProfile The {@link Profile} of the user currently logged into the application.
+     * @param loggedUser The {@link User} of the user currently logged into the application.
      */
-    public ReviewService(Profile loggedProfile) {
-        this.loggedProfile = loggedProfile;
+    public ReviewService(User loggedUser) {
+        this.loggedUser = loggedUser;
     }
 
     /**
@@ -63,7 +63,7 @@ public class ReviewService {
         if (!isRatingValid(rating)) return ReviewResult.FAILED_INVALID_RATING;
         if (getLoggedProfileReviews().stream().anyMatch(r -> r.getCourse().equals(course)))
             return ReviewResult.FAILED_USER_ALREADY_REVIEWED;
-        Review review = new Review(loggedProfile, course, rating, comment, getCurrentTimestampString());
+        Review review = new Review(loggedUser, course, rating, comment, getCurrentTimestampString());
         Review.insertReview(review);
         return ReviewResult.SUCCESS;
     }

@@ -23,12 +23,12 @@ public class ProfileService {
      * Attempts to log into a user profile
      * @param username the username
      * @param password the password
-     * @return The {@link Profile} if login succeeds, or null if credentials don't match
+     * @return The {@link User} if login succeeds, or null if credentials don't match
      */
-    public Profile login(String username, String password) {
+    public User login(String username, String password) {
         // FIXME: need a DB method to find and return a Profile object given a username AND password, null if not found.
-        Profile loggedProfile = null; // = Profile.getProfileByCredentials(username, password)
-        return loggedProfile;
+        User loggedUser = null; // = Profile.getProfileByCredentials(username, password)
+        return loggedUser;
     }
     /**
      * Attempts to create a new profile with a specified username and password.
@@ -42,8 +42,8 @@ public class ProfileService {
         // FIXME: need a boolean method to check if username exists in DB
         // if username exists return ProfileCreateResult.FAILED_USERNAME_TAKEN
         if (password.length() < 8) return ProfileCreateResult.FAILED_PASSWORD_TOO_SHORT;
-        Profile profile = new Profile(username, password);
-        Profile.insertProfile(profile);
+        User user = new User(username, password);
+        User.insertProfile(user);
         return ProfileCreateResult.SUCCESS;
     }
 }

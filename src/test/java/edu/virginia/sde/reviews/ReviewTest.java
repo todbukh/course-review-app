@@ -24,11 +24,11 @@ public class ReviewTest {
     @Test
     public void updateReview_true() {
         Course course = new Course("CS", 1550, "Intro");
-        Profile profile1 = new Profile("user", "pass");
+        User user1 = new User("user", "pass");
         Course.insertCourse(course);
-        Profile.insertProfile(profile1);
+        User.insertProfile(user1);
         Review review1 = new Review(
-                profile1,
+                user1,
                 course,
                 5,
                 "great",
@@ -36,63 +36,63 @@ public class ReviewTest {
         Review.insertReview(review1);
 
         Review updatedReview = new Review(
-                profile1,
+                user1,
                 course,
                 3,
                 "okay",
                 new Timestamp(System.currentTimeMillis()).toString());
 
-        Review.updateReview(review1, updatedReview);
-        assertTrue(Review.getReviewsFromProfile(profile1).contains(updatedReview));
-        assertFalse(Review.getReviewsFromProfile(profile1).contains(review1));
+        Review.updateReview(updatedReview);
+        assertTrue(Review.getReviewsFromProfile(user1).contains(updatedReview));
+        assertFalse(Review.getReviewsFromProfile(user1).contains(review1));
     }
 
     @Test
     public void deleteReview_true() {
         Course course = new Course("CS", 1550, "Intro");
-        Profile profile1 = new Profile("user", "pass");
+        User user1 = new User("user", "pass");
         Course.insertCourse(course);
-        Profile.insertProfile(profile1);
+        User.insertProfile(user1);
         Review review1 = new Review(
-                profile1,
+                user1,
                 course,
                 5,
                 "great",
                 new Timestamp(System.currentTimeMillis()).toString());
         Review.insertReview(review1);
 
-        Review.deleteReview(review1);
+        Review.deleteReview(review1.getCourse(), review1.getUser());
 
-        assertFalse(Review.getReviewsFromProfile(profile1).contains(review1));
+        assertFalse(Review.getReviewsFromProfile(user1).contains(review1));
     }
 
     @Test
     public void getReviewsFromCourse_true() {
         Course course = new Course("CS", 1550, "Intro");
         Course otherCourse = new Course("CS", 1650, "Not Intro");
-        Profile profile1 = new Profile("user", "pass");
-        Profile profile2 = new Profile("user1", "pass");
-        Profile profile3 = new Profile("user2", "pass");
+        User user1 = new User("user", "pass");
+        User user2 = new User("user1", "pass");
+        User user3 = new User("user2", "pass");
         Course.insertCourse(course);
         Course.insertCourse(otherCourse);
-        Profile.insertProfile(profile1);
-        Profile.insertProfile(profile2);
-        Profile.insertProfile(profile3);
+        User.insertProfile(user1);
+        User.insertProfile(user2);
+        User.insertProfile(user3);
 
         Review review1 = new Review(
-                profile1,
+                user1,
                 course,
                 5,
                 "great",
                 new Timestamp(System.currentTimeMillis()).toString());
         Review review2 = new Review(
-                profile2,
+                user2,
                 course,
                 1,
                 "horrible",
                 new Timestamp(System.currentTimeMillis()).toString());
         Review review3 = new Review(
-                profile3,
+                user3,
                 otherCourse,
                 3,
                 "okay",
@@ -123,28 +123,28 @@ public class ReviewTest {
     @Test
     public void getAverageRating() {
         Course course = new Course("CS", 1550, "Intro");
-        Profile profile1 = new Profile("user", "pass");
-        Profile profile2 = new Profile("user1", "pass");
-        Profile profile3 = new Profile("user2", "pass");
+        User user1 = new User("user", "pass");
+        User user2 = new User("user1", "pass");
+        User user3 = new User("user2", "pass");
         Course.insertCourse(course);
-        Profile.insertProfile(profile1);
-        Profile.insertProfile(profile2);
-        Profile.insertProfile(profile3);
+        User.insertProfile(user1);
+        User.insertProfile(user2);
+        User.insertProfile(user3);
 
         Review review1 = new Review(
-                profile1,
+                user1,
                 course,
                 5,
                 "great",
                 new Timestamp(System.currentTimeMillis()).toString());
         Review review2 = new Review(
-                profile2,
+                user2,
                 course,
                 1,
                 "horrible",
                 new Timestamp(System.currentTimeMillis()).toString());
         Review review3 = new Review(
-                profile3,
+                user3,
                 course,
                 3,
                 "okay",
@@ -160,27 +160,27 @@ public class ReviewTest {
     public void getReviewsFromUser_true() {
         Course course = new Course("CS", 1550, "Intro");
         Course otherCourse = new Course("CS", 1650, "Not Intro");
-        Profile profile1 = new Profile("user", "pass");
-        Profile profile2 = new Profile("user1", "pass");
+        User user1 = new User("user", "pass");
+        User user2 = new User("user1", "pass");
         Course.insertCourse(course);
         Course.insertCourse(otherCourse);
-        Profile.insertProfile(profile1);
-        Profile.insertProfile(profile2);
+        User.insertProfile(user1);
+        User.insertProfile(user2);
 
         Review review1 = new Review(
-                profile1,
+                user1,
                 course,
                 5,
                 "great",
                 new Timestamp(System.currentTimeMillis()).toString());
         Review review2 = new Review(
-                profile1,
+                user1,
                 course,
                 1,
                 "horrible",
                 new Timestamp(System.currentTimeMillis()).toString());
         Review review3 = new Review(
-                profile2,
+                user2,
                 otherCourse,
                 3,
                 "okay",
@@ -190,7 +190,7 @@ public class ReviewTest {
         Review.insertReview(review2);
         Review.insertReview(review3);
 
-        assertTrue(Review.getReviewsFromProfile(profile1).equals(List.of(review1, review2)));
+        assertTrue(Review.getReviewsFromProfile(user1).equals(List.of(review1, review2)));
     }
 
 }

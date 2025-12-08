@@ -2,9 +2,9 @@
 
 ## Authors
 1) Todd Burged, jfx8vc, [todbukh]
-2) Name, netid, [GitHub profile name]
-3) Name, netid, [GitHub profile name]
-4) Name, netid, [GitHub profile name]
+2) Name, netid, [GitHub user name]
+3) Name, netid, [GitHub user name]
+4) Name, netid, [GitHub user name]
 
 ## To Run
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "profiles")
-public class Profile {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,9 +17,9 @@ public class Profile {
     @Column(name = "password", nullable = false)
     private String password;
 
-    protected Profile() {}
+    protected User() {}
 
-    public Profile(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -33,18 +33,18 @@ public class Profile {
     }
 
     public boolean equals(Object obj) {
-        if (!(obj instanceof Profile)) {
+        if (!(obj instanceof User)) {
             return false;
         }
-        Profile profile = (Profile)obj;
-        return this.username.equals(profile.username) && this.password.equals(profile.password);
+        User user = (User)obj;
+        return this.username.equals(user.username) && this.password.equals(user.password);
     }
 
-    public static void insertProfile(Profile profile) {
+    public static void insertProfile(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            session.persist(profile);
+            session.persist(user);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -53,28 +53,28 @@ public class Profile {
         }
     }
 
-    public static Profile getProfile(Profile profile) {
-        if(profile == null) {
+    public static User getProfile(User user) {
+        if(user == null) {
             return null;
         }
 
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Profile> profiles = new ArrayList<Profile>();
+        List<User> users = new ArrayList<User>();
         try {
             session.beginTransaction();
 
-            String hql = "SELECT e FROM Profile e WHERE e.username=:username AND e.password=:password";
+            String hql = "SELECT e FROM User e WHERE e.username=:username AND e.password=:password";
 
-            TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
-            query.setParameter("username", profile.getUsername());
-            query.setParameter("password", profile.getPassword());
-            profiles = query.getResultList();
+            TypedQuery<User> query = session.createQuery(hql, User.class);
+            query.setParameter("username", user.getUsername());
+            query.setParameter("password", user.getPassword());
+            users = query.getResultList();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally{
             session.close();
         }
-        return (profiles.isEmpty()) ?  null : (Profile) profiles.getFirst();
+        return (users.isEmpty()) ?  null : (User) users.getFirst();
     }
 
     public static boolean usernameExists(String username) {
@@ -83,21 +83,21 @@ public class Profile {
         }
 
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Profile> profiles = new ArrayList<Profile>();
+        List<User> users = new ArrayList<User>();
         try {
             session.beginTransaction();
 
-            String hql = "SELECT e FROM Profile e WHERE e.username=:username";
+            String hql = "SELECT e FROM User e WHERE e.username=:username";
 
-            TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
+            TypedQuery<User> query = session.createQuery(hql, User.class);
             query.setParameter("username", username);
-            profiles = query.getResultList();
+            users = query.getResultList();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
-        return (!profiles.isEmpty()) && (profiles.getFirst().username.equals(username));
+        return (!users.isEmpty()) && (users.getFirst().username.equals(username));
     }
 
 

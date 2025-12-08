@@ -10,7 +10,7 @@
         <property name="hibernate.hbm2ddl.auto" >update</property>
 
         <mapping class="edu.virginia.sde.reviews.Course" />
-        <mapping class="edu.virginia.sde.reviews.Profile" />
+        <mapping class="edu.virginia.sde.reviews.User" />
         <mapping class="edu.virginia.sde.reviews.Review" />
     </session-factory>
 </hibernate-configuration>
