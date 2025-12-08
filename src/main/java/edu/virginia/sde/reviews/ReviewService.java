@@ -1,18 +1,36 @@
 package edu.virginia.sde.reviews;
 
 import java.util.*;
+import java.sql.Timestamp;
+import java.text.
 
 /**
  * Handles business logic for the "My Reviews" and "Course Reviews" Scenes
  */
 public class ReviewService {
 
+    public static enum ReviewResult {
+        FAILED_INVALID_RATING,
+        FAILED_USER_ALREADY_REVIEWED,
+        SUCCESS
+    }
+
     public List<Review> getReviewsForCourse(Course course) {
         return Review.getReviewsFromCourse(course);
     }
-    public boolean submitReview(Course course, Profile user, int Rating, String comment) {
-        //FIXME: implement
-        return false;
+
+    public ReviewResult submitReview(Course course, Profile user, int rating, String comment) {
+        if (!isRatingValid(rating)) return ReviewResult.FAILED_INVALID_RATING;
+        // FIXME: need boolean DB method to see if user has reviewed this course
+        // if (userHasReviewedCourse) return FAILED_USER_ALREADY_REVIEWED
+        String timestamp = new Timestamp(System.currentTimeMillis()).toString();
+        Review review = new Review(user, course, rating, timestamp, comment);
+        Review.insertReview(review);
+        return ReviewResult.SUCCESS;
+    }
+
+    private boolean isRatingValid(int Rating) {
+        return Rating >= 1 && Rating <= 5;
     }
 
     public boolean editReview(int reviewId, int newRating, String newComment) {
