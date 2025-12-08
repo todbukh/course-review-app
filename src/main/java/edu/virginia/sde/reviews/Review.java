@@ -103,8 +103,8 @@ public class Review {
     }
 
     public static List<Review> getReviewsFromProfile(Profile profile) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        List<Review> reviews = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Review> reviews = new ArrayList<Review>();
         try {
             session.beginTransaction();
 
@@ -149,7 +149,7 @@ public class Review {
     }
 
     protected static List<Review> getReviewsFromCourse(Course course) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List<Review> reviews = new ArrayList<Review>();
         try {
             session.beginTransaction();
