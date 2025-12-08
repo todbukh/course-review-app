@@ -2,7 +2,7 @@
 
 ## Authors
 1) Todd Burged, jfx8vc, [todbukh]
-2) Name, netid, [GitHub user name]
+2) Josh Riley, arv4xc, [joshriley22]
 3) Name, netid, [GitHub user name]
 4) Name, netid, [GitHub user name]
 
@@ -21,12 +21,12 @@ The Logic Layer of the Three-Layer Architecture:
   * ```CourseService.java```
   * ```ReviewService.java```
 
-### [Author 2 - replace this with their name]
+### Josh Riley
 
-* Author 2 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
-
+Database Layer
+* ```Course.java & CourseTest.java```
+* ```Review.java & ReviewTest.java```
+* ```User.java & UserTest.java```
 ### [Author 3 - replace this with their name]
 
 * Author 3 contributions
