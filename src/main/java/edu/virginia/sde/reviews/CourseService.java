@@ -6,8 +6,10 @@ import java.util.*;
 public class CourseService {
     /**
      * Possible outcomes of attempting to add a new course.
+     *
+     * @author Todd Burged
      */
-    public static enum CourseAddResult {
+    public enum CourseAddResult {
         /** Course was added successfully */
         SUCCESS,
         /** Course title is empty or null */

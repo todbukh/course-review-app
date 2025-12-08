@@ -6,6 +6,8 @@ package edu.virginia.sde.reviews;
 public class ProfileService {
     /**
      * Possible outcomes when attempting to create a new user profile
+     *
+     * @author Todd Burged
      */
     public enum ProfileCreateResult {
         /**
