@@ -12,7 +12,18 @@ public class CourseService {
     public List<Course> getAllCourses() {
         return Course.getCourseList();
     }
-
+    public static enum CourseAddResult {
+        SUCCESS,
+        FAILED_EMPTY_TITLE,
+        FAILED_TITLE_TOO_LONG,
+        FAILED_EMPTY_SUBJECT,
+        FAILED_INVALID_SUBJECT_CHARS,
+        FAILED_INVALID_SUBJECT_LENGTH,
+        FAILED_EMPTY_COURSE_NUMBER,
+        FAILED_INVALID_COURSE_NUMBER_CHARS,
+        FAILED_INVALID_COURSE_NUMBER_LENGTH,
+        FAILED_COURSE_ALREADY_EXISTS
+    }
     /**
      * Adds a course with a user-specified subject mnemonic, course number, and course title, with the following constraints:
      * <ul>
@@ -27,14 +38,34 @@ public class CourseService {
      * @throws IllegalArgumentException if input is invalid.
      * @return {@code true} if course was successfully added, and {@code false} if course already exists
      */
-    public boolean addCourse(String subject, String courseNumberStr, String title) {
-        validateSubjectMnemonic(subject);
-        validateCourseNumberStr(courseNumberStr);
-        validateTitle(title);
+    public CourseAddResult addCourse(String subject, String courseNumberStr, String title) {
+        title = (title == null) ? "" : title.strip();
+        subject = (subject == null) ? "" : subject.strip();
+        courseNumberStr = (courseNumberStr == null) ? "" : courseNumberStr.strip();
+
+        // validate title
+        if (title.isEmpty()) return CourseAddResult.FAILED_EMPTY_TITLE;
+        if (title.length() > 50) return CourseAddResult.FAILED_TITLE_TOO_LONG;
+
+        //validate subject
+        if (subject.isEmpty()) return CourseAddResult.FAILED_EMPTY_SUBJECT;
+        if (!subject.matches("[a-zA-Z]+")) return CourseAddResult.FAILED_INVALID_SUBJECT_CHARS;
+        if (subject.length() < 2 || subject.length() > 4) return CourseAddResult.FAILED_INVALID_SUBJECT_LENGTH;
+
+        // validate course number
+        if (courseNumberStr.isEmpty()) return CourseAddResult.FAILED_EMPTY_COURSE_NUMBER;
+        if (courseNumberStr.length() != 4) return CourseAddResult.FAILED_INVALID_COURSE_NUMBER_LENGTH;
+        for (int i = 0; i < courseNumberStr.length(); i++) {
+            if (!Character.isDigit(courseNumberStr.charAt(i))) return CourseAddResult.FAILED_INVALID_COURSE_NUMBER_CHARS;
+        }
+
+        // check DB for course
         Course newCourse = new Course(subject.toUpperCase(), Integer.parseInt(courseNumberStr), title);
-        if (Course.courseExists(newCourse)) return false;
+        if (Course.courseExists(newCourse)) return CourseAddResult.FAILED_COURSE_ALREADY_EXISTS;
+
+        // add the course
         Course.insertCourse(newCourse);
-        return true;
+        return CourseAddResult.SUCCESS;
     }
 
     /**
@@ -68,27 +99,5 @@ public class CourseService {
                         return c.getCourseName().toLowerCase().contains(titleSubstring.strip().toLowerCase());
                 })
                 .toList();
-    }
-    private void validateTitle(String title) {
-        if (title == null) throw new IllegalArgumentException("The course title cannot be null.");
-        title = title.strip();
-        if (title.isEmpty()) throw new IllegalArgumentException("Course title cannot be empty.");
-        if (title.length() > 50) throw new IllegalArgumentException("The course title cannot be longer than 50 characters.");
-    }
-    private void validateSubjectMnemonic(String subject) {
-        if (subject == null) throw new IllegalArgumentException("Subject mnemonic cannot be null.");
-        subject = subject.strip();
-        if (subject.isEmpty()) throw new IllegalArgumentException("Subject mnemonic cannot be empty.");
-        if (!subject.matches("[a-zA-Z]+")) throw new IllegalArgumentException("Invalid subject mnemonic: Only English letters allowed.");
-        if (subject.length() < 2 || subject.length() > 4) throw new IllegalArgumentException("Invalid subject mnemonic: length must be between 2 and 4 characters.");
-    }
-    private void validateCourseNumberStr(String courseNumberStr) {
-        if (courseNumberStr == null) throw new IllegalArgumentException("Course number cannot be null.");
-        courseNumberStr = courseNumberStr.strip();
-        if (courseNumberStr.isEmpty()) throw new IllegalArgumentException("Course number cannot be empty.");
-        if (courseNumberStr.length() != 4) throw new IllegalArgumentException("Course number must be exactly 4 digits.");
-        for (int i = 0; i < courseNumberStr.length(); i++) {
-            if (!Character.isDigit(courseNumberStr.charAt(i))) throw new IllegalArgumentException("Only numeric characters are allowed for course number.");
-        }
     }
 }
