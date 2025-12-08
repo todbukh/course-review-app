@@ -2,6 +2,7 @@ package edu.virginia.sde.reviews;
 import jakarta.persistence.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.MutationQuery;
 
 import java.util.List;
 
@@ -54,6 +55,8 @@ public class Review {
         return comment;
     }
 
+    public int getId() {return id; }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Review)) {
@@ -67,6 +70,25 @@ public class Review {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.persist(review);
+        transaction.commit();
+        session.close();
+    }
+
+    public static void updateReview(Review review) {
+        deleteReview(review);
+        insertReview(review);
+    }
+
+    public static void deleteReview(Review review) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        String hql = "DELETE FROM Review e WHERE e.course=: course AND e.user=: user";
+        MutationQuery query = session.createMutationQuery(hql);
+        query.setParameter("course", review.getCourse());
+        query.setParameter("user", review.getUser());
+        query.executeUpdate();
+
         transaction.commit();
         session.close();
     }
