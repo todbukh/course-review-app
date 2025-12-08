@@ -8,8 +8,7 @@ import java.util.*;
 public class ReviewService {
 
     public List<Review> getReviewsForCourse(Course course) {
-        // FIXME: implement
-        return null;
+        return Review.getReviewsFromCourse(course);
     }
     public boolean submitReview(Course course, Profile user, int Rating, String comment) {
         //FIXME: implement
