@@ -74,9 +74,9 @@ public class Review {
         session.close();
     }
 
-    public static void updateReview(Review review) {
-        deleteReview(review);
-        insertReview(review);
+    public static void updateReview(Review initialReview, Review updatedReview) {
+        deleteReview(initialReview);
+        insertReview(updatedReview);
     }
 
     public static void deleteReview(Review review) {
@@ -105,6 +105,24 @@ public class Review {
         List<Review> reviews = query.getResultList();
         session.close();
         return reviews;
+    }
+
+    public static Review getReviewFromCourseAndProfile(Course course, Profile profile) throws ReviewDoesNotExistException {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        String hql = "SELECT e FROM Review e WHERE e.course=: course AND e.user =: user";
+
+        TypedQuery<Review> query = session.createQuery(hql, Review.class);
+        query.setParameter("course", course);
+        query.setParameter("user", profile);
+
+        List<Review> reviews = query.getResultList();
+        session.close();
+        if(reviews.isEmpty()) {
+            throw new ReviewDoesNotExistException("Review does not exist");
+        }
+        return reviews.getFirst();
     }
 
     protected static List<Review> getReviewsFromCourse(Course course) {
