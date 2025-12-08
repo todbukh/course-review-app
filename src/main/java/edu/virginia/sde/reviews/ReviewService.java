@@ -103,7 +103,7 @@ public class ReviewService {
      * @return The average rating rounded to two decimal places.
      */
     public double getCourseAverageRating(Course course) {
-        double avg = getReviewsForCourse(course).stream().mapToInt(Review::getRating).average().orElse(0.0);
+        double avg = Review.getAverageRating(course);
         return Math.round(avg * 100.0) / 100.0;
     }
 
