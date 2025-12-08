@@ -23,7 +23,7 @@ public class ReviewService {
     /**
      * Constructs a new ReviewService instance.
      *
-     * @param loggedProfile The {@code Profile} of the user currently logged into the application.
+     * @param loggedProfile The {@link Profile} of the user currently logged into the application.
      */
     public ReviewService(Profile loggedProfile) {
         this.loggedProfile = loggedProfile;
@@ -32,7 +32,7 @@ public class ReviewService {
     /**
      * Retrieves all reviews written by the currently logged-in user.
      *
-     * @return A {@code List} of {@code Review} objects associated with the logged-in user.
+     * @return A {@code List} of {@link Review} objects associated with the logged-in user.
      */
     public List<Review> getLoggedProfileReviews() {
         //FIXME: need DB method to get Reviews by user
