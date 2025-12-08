@@ -42,7 +42,7 @@ public class ReviewTest {
                 "okay",
                 new Timestamp(System.currentTimeMillis()).toString());
 
-        Review.updateReview(updatedReview);
+        Review.updateReview(review1, updatedReview);
         assertTrue(Review.getReviewsFromProfile(profile1).contains(updatedReview));
         assertFalse(Review.getReviewsFromProfile(profile1).contains(review1));
     }
@@ -114,8 +114,10 @@ public class ReviewTest {
     }
 
     @Test
-    public void getReviewFromCourse_throwsException() {
-        assertThrows(IllegalStateException.class, () -> {Review.getReviewsFromCourse(new Course("MATH", 2550, "Intro"));});
+    public void getReviewFromCourse_isEmpty() {
+
+        Course nonexistentCourse = new Course("MATH", 2550, "Intro");
+        assertTrue(Review.getReviewsFromCourse(nonexistentCourse).isEmpty());
     }
 
     @Test

@@ -14,8 +14,13 @@ public class CourseTest {
 
     @BeforeEach
     public void clearDB() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = null;
+        if(session.getTransaction().isActive()) {
+            transaction = session.getTransaction();
+        } else {
+            transaction = session.beginTransaction();
+        }
         session.createQuery("delete from Course").executeUpdate();
         transaction.commit();
         session.close();

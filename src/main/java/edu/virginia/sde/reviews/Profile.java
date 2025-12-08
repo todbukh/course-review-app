@@ -2,6 +2,7 @@ package edu.virginia.sde.reviews;
 import jakarta.persistence.*;
 import org.hibernate.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,11 +41,16 @@ public class Profile {
     }
 
     public static void insertProfile(Profile profile) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        session.persist(profile);
-        session.getTransaction().commit();
-        session.close();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.persist(profile);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 
     public static Profile getProfile(Profile profile) {
@@ -52,17 +58,22 @@ public class Profile {
             return null;
         }
 
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Profile> profiles = new ArrayList<Profile>();
+        try {
+            session.beginTransaction();
 
-        String hql = "SELECT e FROM Profile e WHERE e.username=:username AND e.password=:password";
+            String hql = "SELECT e FROM Profile e WHERE e.username=:username AND e.password=:password";
 
-        TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
-        query.setParameter("username", profile.getUsername());
-        query.setParameter("password", profile.getPassword());
-        List<Profile> profiles = query.getResultList();
-        session.close();
-
+            TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
+            query.setParameter("username", profile.getUsername());
+            query.setParameter("password", profile.getPassword());
+            profiles = query.getResultList();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally{
+            session.close();
+        }
         return (profiles.isEmpty()) ?  null : (Profile) profiles.getFirst();
     }
 
@@ -81,7 +92,7 @@ public class Profile {
         List<Profile> profiles = query.getResultList();
         session.close();
 
-        return (profiles.isEmpty()) ? false : (profiles.getFirst().username.equals(username));
+        return (!profiles.isEmpty()) && (profiles.getFirst().username.equals(username));
     }
 
 

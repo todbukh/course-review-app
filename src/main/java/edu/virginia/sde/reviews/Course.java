@@ -1,6 +1,7 @@
 package edu.virginia.sde.reviews;
 import jakarta.persistence.*;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -47,10 +48,23 @@ public class Course {
     }
 
     public static void insertCourse(Course course) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        session.persist(course);
-        session.getTransaction().commit();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
+        try {
+            if(session.getTransaction().isActive()) {
+                transaction = session.getTransaction();
+            } else {
+                transaction = session.beginTransaction();
+            }
+            session.persist(course);
+            transaction.commit();
+        } catch (Exception e) {
+            if(transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            session.close();
+        }
     }
 
     public static boolean courseExists(Course course) {

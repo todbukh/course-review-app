@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.MutationQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -67,11 +68,16 @@ public class Review {
     }
 
     public static void insertReview(Review review) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        session.persist(review);
-        transaction.commit();
-        session.close();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Transaction transaction = session.beginTransaction();
+            session.persist(review);
+            transaction.commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 
     public static void updateReview(Review initialReview, Review updatedReview) {
@@ -80,68 +86,90 @@ public class Review {
     }
 
     public static void deleteReview(Review review) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
 
-        String hql = "DELETE FROM Review e WHERE e.course=: course AND e.user=: user";
-        MutationQuery query = session.createMutationQuery(hql);
-        query.setParameter("course", review.getCourse());
-        query.setParameter("user", review.getUser());
-        query.executeUpdate();
-
-        transaction.commit();
-        session.close();
+            String hql = "DELETE FROM Review e WHERE e.course=: course AND e.user=: user";
+            MutationQuery query = session.createMutationQuery(hql);
+            query.setParameter("course", review.getCourse());
+            query.setParameter("user", review.getUser());
+            query.executeUpdate();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 
     public static List<Review> getReviewsFromProfile(Profile profile) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+        List<Review> reviews = null;
+        try {
+            session.beginTransaction();
 
-        String hql = "SELECT e FROM Review e WHERE e.user=: user";
+            String hql = "SELECT e FROM Review e WHERE e.user=: user";
 
-        TypedQuery<Review> query = session.createQuery(hql, Review.class);
-        query.setParameter("user", profile);
+            TypedQuery<Review> query = session.createQuery(hql, Review.class);
+            query.setParameter("user", profile);
 
-        List<Review> reviews = query.getResultList();
-        session.close();
+            reviews = query.getResultList();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw new RuntimeException(e);
+        } finally {
+            session.close();
+        }
         return reviews;
     }
 
     public static Review getReviewFromCourseAndProfile(Course course, Profile profile) throws ReviewDoesNotExistException {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List <Review> reviews = null;
+        try {
+            session.beginTransaction();
 
-        String hql = "SELECT e FROM Review e WHERE e.course=: course AND e.user =: user";
+            String hql = "SELECT e FROM Review e WHERE e.course=: course AND e.user =: user";
 
-        TypedQuery<Review> query = session.createQuery(hql, Review.class);
-        query.setParameter("course", course);
-        query.setParameter("user", profile);
+            TypedQuery<Review> query = session.createQuery(hql, Review.class);
+            query.setParameter("course", course);
+            query.setParameter("user", profile);
 
-        List<Review> reviews = query.getResultList();
-        session.close();
-        if(reviews.isEmpty()) {
-            throw new ReviewDoesNotExistException("Review does not exist");
+            reviews = query.getResultList();
+            if (reviews.isEmpty()) {
+                throw new ReviewDoesNotExistException("Review does not exist");
+            }
+            return reviews.getFirst();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
         return reviews.getFirst();
     }
 
     protected static List<Review> getReviewsFromCourse(Course course) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+        List<Review> reviews = new ArrayList<Review>();
+        try {
+            session.beginTransaction();
 
-        String hql = "SELECT e FROM Review e WHERE e.course=: course";
+            String hql = "SELECT e FROM Review e WHERE e.course=: course";
 
-        TypedQuery<Review> query = session.createQuery(hql, Review.class);
-        query.setParameter("course", course);
+            TypedQuery<Review> query = session.createQuery(hql, Review.class);
+            query.setParameter("course", course);
 
-        List<Review> reviews = query.getResultList();
-        session.close();
+            reviews = query.getResultList();
+        } catch (Exception e){
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
         return reviews;
     }
     public static double getAverageRating(Course course) throws IllegalStateException {
         if (Course.courseExists(course)) {
             List<Review> courseReviews = Review.getReviewsFromCourse(course);
-
             return courseReviews.stream()
                     .mapToInt(Review::getRating)
                     .average()
