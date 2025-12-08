@@ -3,13 +3,13 @@ package edu.virginia.sde.reviews;
 /**
  * Handles business logic for the Log-In scene.
  */
-public class ProfileService {
+public class UserService {
     /**
      * Possible outcomes when attempting to create a new user profile
      *
      * @author Todd Burged
      */
-    public enum ProfileCreateResult {
+    public enum UserCreateResult {
         /**
          * Profile successfully created
          */
@@ -27,7 +27,7 @@ public class ProfileService {
      */
     public User login(String username, String password) {
         // FIXME: need a DB method to find and return a Profile object given a username AND password, null if not found.
-        User loggedUser = null; // = Profile.getProfileByCredentials(username, password)
+        User loggedUser = User.getUser(new User(username, password));
         return loggedUser;
     }
     /**
@@ -36,14 +36,15 @@ public class ProfileService {
      *
      * @param username must be unique.
      * @param password must be at least 8 characters in length.
-     * @return A {@link ProfileCreateResult} status indicating success or the specific reason for failure.
+     * @return A {@link UserCreateResult} status indicating success or the specific reason for failure.
      */
-    public ProfileCreateResult createProfile(String username, String password) {
+    public UserCreateResult createUser(String username, String password) {
         // FIXME: need a boolean method to check if username exists in DB
         // if username exists return ProfileCreateResult.FAILED_USERNAME_TAKEN
-        if (password.length() < 8) return ProfileCreateResult.FAILED_PASSWORD_TOO_SHORT;
+        if(User.usernameExists(username)) return UserCreateResult.FAILED_USERNAME_TAKEN;
+        if (password.length() < 8) return UserCreateResult.FAILED_PASSWORD_TOO_SHORT;
         User user = new User(username, password);
-        User.insertProfile(user);
-        return ProfileCreateResult.SUCCESS;
+        User.insertUser(user);
+        return UserCreateResult.SUCCESS;
     }
 }

@@ -40,7 +40,7 @@ public class User {
         return this.username.equals(user.username) && this.password.equals(user.password);
     }
 
-    public static void insertProfile(User user) {
+    public static void insertUser(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
@@ -53,7 +53,7 @@ public class User {
         }
     }
 
-    public static User getProfile(User user) {
+    public static User getUser(User user) {
         if(user == null) {
             return null;
         }
