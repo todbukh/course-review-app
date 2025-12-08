@@ -71,6 +71,20 @@ public class Review {
         session.close();
     }
 
+    public static List<Review> getReviewsFromProfile(Profile profile) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        String hql = "SELECT e FROM Review e WHERE e.user=: user";
+
+        TypedQuery<Review> query = session.createQuery(hql, Review.class);
+        query.setParameter("user", profile);
+
+        List<Review> reviews = query.getResultList();
+        session.close();
+        return reviews;
+    }
+
     protected static List<Review> getReviewsFromCourse(Course course) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
