@@ -5,6 +5,31 @@ import java.util.*;
  */
 public class CourseService {
     /**
+     * Possible outcomes of attempting to add a new course.
+     */
+    public static enum CourseAddResult {
+        /** Course was added successfully */
+        SUCCESS,
+        /** Course title is empty or null */
+        FAILED_EMPTY_TITLE,
+        /** Course title is longer than 50 characters */
+        FAILED_TITLE_TOO_LONG,
+        /** Subject mnemonic field is empty or null */
+        FAILED_EMPTY_SUBJECT,
+        /** Subject mnemonic contained non-letter characters */
+        FAILED_INVALID_SUBJECT_CHARS,
+        /** Subject mnemonic was not between 2 and 4 characters in length */
+        FAILED_INVALID_SUBJECT_LENGTH,
+        /** Course number field is empty or null */
+        FAILED_EMPTY_COURSE_NUMBER,
+        /** Course number contained non-numeric characters */
+        FAILED_INVALID_COURSE_NUMBER_CHARS,
+        /** Course Number was not exactly 4 digits long */
+        FAILED_INVALID_COURSE_NUMBER_LENGTH,
+        /** A course with the same subject, number, and title already exists */
+        FAILED_COURSE_ALREADY_EXISTS;
+    }
+    /**
      * Retrieves all courses currently in the catalog
      * @return a List of all courses in the database
      * @see Course#getCourseList()
@@ -12,31 +37,20 @@ public class CourseService {
     public List<Course> getAllCourses() {
         return Course.getCourseList();
     }
-    public static enum CourseAddResult {
-        SUCCESS,
-        FAILED_EMPTY_TITLE,
-        FAILED_TITLE_TOO_LONG,
-        FAILED_EMPTY_SUBJECT,
-        FAILED_INVALID_SUBJECT_CHARS,
-        FAILED_INVALID_SUBJECT_LENGTH,
-        FAILED_EMPTY_COURSE_NUMBER,
-        FAILED_INVALID_COURSE_NUMBER_CHARS,
-        FAILED_INVALID_COURSE_NUMBER_LENGTH,
-        FAILED_COURSE_ALREADY_EXISTS
-    }
     /**
-     * Adds a course with a user-specified subject mnemonic, course number, and course title, with the following constraints:
+     * Attempts to add a course after validating the user-specified subject mnemonic,
+     * course number, and course title against the following constraints:
      * <ul>
-     *      <li> <b>Subject mnemonic</b>: strictly 2-4 letters</li>
-     *      <li> <b>Course number</b>: strictly 4 digits</li>
-     *      <li> <b>Course title</b>: between 1 and 50 characters</li>
+     * <li> <b>Subject mnemonic</b>: must be strictly 2-4 letters (will be stored as uppercase).</li>
+     * <li> <b>Course number</b>: must be strictly 4 digits.</li>
+     * <li> <b>Course title</b>: must be between 1 and 50 characters.</li>
      * </ul>
-     * If any constraint is violated, an exception is thrown.
-     * @param subject a 2-4 letter subject mnemonic
-     * @param courseNumberStr a 4-digit course number
-     * @param title a 1-50 character course title
-     * @throws IllegalArgumentException if input is invalid.
-     * @return {@code true} if course was successfully added, and {@code false} if course already exists
+     * The method returns a status indicating success or the specific reason for failure.
+     *
+     * @param subject a 2-4 letter subject mnemonic.
+     * @param courseNumberStr a 4-digit course number string.
+     * @param title a 1-50 character course title.
+     * @return a {@link CourseAddResult} indicating success or detailed failure.
      */
     public CourseAddResult addCourse(String subject, String courseNumberStr, String title) {
         title = (title == null) ? "" : title.strip();
@@ -69,9 +83,9 @@ public class CourseService {
     }
 
     /**
-     * Searches for courses that match a specified subject mnemonic, course number, and/or titleSubstring substring.
+     * Searches for courses that match a specified subject mnemonic, course number, and/or title substring.
      * <i>Example</i>: you can search for CS courses that contain the substring "intro" (case-insensitive)
-     * by calling {@code searchCourses("CS", null, "Intro")}.
+     * by calling {@code searchCourses("CS", null, "Intro")}. Note that all criteria are optional and may be {@code null}.
      * @param subject subject mnemonic query
      * @param courseNumberStr course Number query
      * @param titleSubstring substring to query from course titles
