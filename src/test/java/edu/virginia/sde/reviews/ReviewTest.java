@@ -108,4 +108,42 @@ public class ReviewTest {
         Review.insertReview(review3);
         assertEquals(3.0, Review.getAverageRating(course));
     }
+
+    @Test
+    public void getReviewsFromUser_true() {
+        Course course = new Course("CS", 1550, "Intro");
+        Course otherCourse = new Course("CS", 1650, "Not Intro");
+        Profile profile1 = new Profile("user", "pass");
+        Profile profile2 = new Profile("user1", "pass");
+        Course.insertCourse(course);
+        Course.insertCourse(otherCourse);
+        Profile.insertProfile(profile1);
+        Profile.insertProfile(profile2);
+
+        Review review1 = new Review(
+                profile1,
+                course,
+                5,
+                "great",
+                new Timestamp(System.currentTimeMillis()).toString());
+        Review review2 = new Review(
+                profile1,
+                course,
+                1,
+                "horrible",
+                new Timestamp(System.currentTimeMillis()).toString());
+        Review review3 = new Review(
+                profile2,
+                otherCourse,
+                3,
+                "okay",
+                new Timestamp(System.currentTimeMillis()).toString());
+
+        Review.insertReview(review1);
+        Review.insertReview(review2);
+        Review.insertReview(review3);
+
+        assertTrue(Review.getReviewsFromProfile(profile1).equals(List.of(review1, review2)));
+    }
+
 }
