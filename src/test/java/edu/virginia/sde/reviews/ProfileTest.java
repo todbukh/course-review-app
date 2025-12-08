@@ -26,22 +26,34 @@ public class ProfileTest {
     @Test
     public void insertData() {
         Profile.insertProfile(this.profile);
-        assertTrue(Profile.profileExists(this.profile));
+        assertTrue(Profile.usernameExists(this.profile.getUsername()));
     }
 
     @Test
     public void profileExists_false() {
         Profile.insertProfile(this.profile);
-        assertFalse(Profile.profileExists(new Profile("not_username", "not_password")));
+        assertFalse(Profile.usernameExists("not_username"));
     }
 
     @Test
     public void profileExists_false_emptyDB() {
-        assertFalse(Profile.profileExists(this.profile));
+        assertFalse(Profile.usernameExists(this.profile.getUsername()));
     }
 
     @Test
     public void profileExists_false_null() {
-        assertFalse(Profile.profileExists(null));
+        assertFalse(Profile.usernameExists(null));
+    }
+
+    @Test
+    public void getProfile_true() {
+        Profile.insertProfile(this.profile);
+        assertTrue(Profile.getProfile(this.profile).equals(this.profile));
+    }
+
+    @Test
+    public void getProfile_null() {
+        Profile.insertProfile(this.profile);
+        assertFalse(this.profile.equals(Profile.getProfile(null)));
     }
 }
