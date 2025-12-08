@@ -31,6 +31,14 @@ public class Profile {
         return this.password;
     }
 
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Profile)) {
+            return false;
+        }
+        Profile profile = (Profile)obj;
+        return this.username.equals(profile.username) && this.password.equals(profile.password);
+    }
+
     public static void insertProfile(Profile profile) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
@@ -39,9 +47,9 @@ public class Profile {
         session.close();
     }
 
-    public static boolean profileExists(Profile profile) {
+    public static Profile getProfile(Profile profile) {
         if(profile == null) {
-            return false;
+            return null;
         }
 
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -53,9 +61,28 @@ public class Profile {
         query.setParameter("username", profile.getUsername());
         query.setParameter("password", profile.getPassword());
         List<Profile> profiles = query.getResultList();
-
         session.close();
 
-        return !(profiles.isEmpty());
+        return (profiles.isEmpty()) ?  null : (Profile) profiles.getFirst();
     }
+
+    public static boolean usernameExists(String username) {
+        if(username == null) {
+            return false;
+        }
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        String hql = "SELECT e FROM Profile e WHERE e.username=:username";
+
+        TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
+        query.setParameter("username", username);
+        List<Profile> profiles = query.getResultList();
+        session.close();
+
+        return (profiles.isEmpty()) ? false : (profiles.getFirst().username.equals(username));
+    }
+
+
 }
