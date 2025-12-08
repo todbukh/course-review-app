@@ -22,6 +22,51 @@ public class ReviewTest {
     }
 
     @Test
+    public void updateReview_true() {
+        Course course = new Course("CS", 1550, "Intro");
+        Profile profile1 = new Profile("user", "pass");
+        Course.insertCourse(course);
+        Profile.insertProfile(profile1);
+        Review review1 = new Review(
+                profile1,
+                course,
+                5,
+                "great",
+                new Timestamp(System.currentTimeMillis()).toString());
+        Review.insertReview(review1);
+
+        Review updatedReview = new Review(
+                profile1,
+                course,
+                3,
+                "okay",
+                new Timestamp(System.currentTimeMillis()).toString());
+
+        Review.updateReview(updatedReview);
+        assertTrue(Review.getReviewsFromProfile(profile1).contains(updatedReview));
+        assertFalse(Review.getReviewsFromProfile(profile1).contains(review1));
+    }
+
+    @Test
+    public void deleteReview_true() {
+        Course course = new Course("CS", 1550, "Intro");
+        Profile profile1 = new Profile("user", "pass");
+        Course.insertCourse(course);
+        Profile.insertProfile(profile1);
+        Review review1 = new Review(
+                profile1,
+                course,
+                5,
+                "great",
+                new Timestamp(System.currentTimeMillis()).toString());
+        Review.insertReview(review1);
+
+        Review.deleteReview(review1);
+
+        assertFalse(Review.getReviewsFromProfile(profile1).contains(review1));
+    }
+
+    @Test
     public void getReviewsFromCourse_true() {
         Course course = new Course("CS", 1550, "Intro");
         Course otherCourse = new Course("CS", 1650, "Not Intro");
