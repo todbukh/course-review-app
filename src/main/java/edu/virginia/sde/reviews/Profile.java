@@ -82,16 +82,21 @@ public class Profile {
             return false;
         }
 
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Profile> profiles = new ArrayList<Profile>();
+        try {
+            session.beginTransaction();
 
-        String hql = "SELECT e FROM Profile e WHERE e.username=:username";
+            String hql = "SELECT e FROM Profile e WHERE e.username=:username";
 
-        TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
-        query.setParameter("username", username);
-        List<Profile> profiles = query.getResultList();
-        session.close();
-
+            TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
+            query.setParameter("username", username);
+            profiles = query.getResultList();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
         return (!profiles.isEmpty()) && (profiles.getFirst().username.equals(username));
     }
 

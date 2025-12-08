@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -71,29 +72,41 @@ public class Course {
         if(course == null) {
             return false;
         }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Profile> profiles = new ArrayList<Profile>();
+        try {
+            session.beginTransaction();
 
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+            String hql = "SELECT e FROM Course e WHERE e.subject=:subject AND e.courseName=:course_name AND e.courseNumber=:course_number";
 
-        String hql = "SELECT e FROM Course e WHERE e.subject=:subject AND e.courseName=:course_name AND e.courseNumber=:course_number";
-
-        TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
-        query.setParameter("subject", course.getSubject());
-        query.setParameter("course_name", course.getCourseName());
-        query.setParameter("course_number", course.getCourseNumber());
-        List<Profile> profiles = query.getResultList();
-
-        session.close();
+            TypedQuery<Profile> query = session.createQuery(hql, Profile.class);
+            query.setParameter("subject", course.getSubject());
+            query.setParameter("course_name", course.getCourseName());
+            query.setParameter("course_number", course.getCourseNumber());
+            profiles = query.getResultList();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
 
         return !(profiles.isEmpty());
     }
 
     public static List<Course> getCourseList() {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Course> courses = new ArrayList<Course>();
+        try {
+            session.beginTransaction();
 
-        String hql = "SELECT e FROM Course e";
-        TypedQuery<Course> query = session.createQuery(hql, Course.class);
-        return query.getResultList();
+            String hql = "SELECT e FROM Course e";
+            TypedQuery<Course> query = session.createQuery(hql, Course.class);
+            courses = query.getResultList();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return courses;
     }
 }
