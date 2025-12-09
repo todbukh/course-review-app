@@ -16,6 +16,8 @@ public class ReviewService {
         FAILED_INVALID_RATING,
         /** The currently logged-in user has already submitted a review for this course */
         FAILED_USER_ALREADY_REVIEWED,
+        /** The currently logged-in user attempted to edit or delete a review that is not his own. */ // This should not happen, but it's here just in case
+        FAILED_UNAUTHORIZED_USER,
         SUCCESS
     }
     private final User loggedUser;
@@ -35,8 +37,7 @@ public class ReviewService {
      * @return A {@code List} of {@link Review} objects associated with the logged-in user.
      */
     public List<Review> getLoggedProfileReviews() {
-        //FIXME: need DB method to get Reviews by user
-        return null;
+        return Review.getReviewsFromProfile(loggedUser);
     }
     /**
      * Retrieves all reviews associated with a specific course.
@@ -77,21 +78,39 @@ public class ReviewService {
      * @param newComment The new comment.
      * @return A {@link ReviewResult} indicating the outcome of the edit operation.
      */
-    public ReviewResult editReview(int reviewId, int newRating, String newComment) {
-        // FIXME: need DB method to update a review given the reviewId
+    public ReviewResult editReview(Review oldReview, int newRating, String newComment) {
         if (!isRatingValid(newRating)) return ReviewResult.FAILED_INVALID_RATING;
+        if (!loggedUser.equals(oldReview.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
         String timestampString = getCurrentTimestampString();
-        // update the review with reviewID with the new rating, comment, and timestamp
+        Review newReview = new Review(loggedUser, oldReview.getCourse(), newRating, newComment, timestampString);
+        Review.updateReview(newReview);
+        return ReviewResult.SUCCESS;
+    }
+    public ReviewResult editReview(Review oldReview, int newRating) {
+        if (!isRatingValid(newRating)) return ReviewResult.FAILED_INVALID_RATING;
+        if (!loggedUser.equals(oldReview.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
+        String timestampString = getCurrentTimestampString();
+        Review newReview = new Review(loggedUser, oldReview.getCourse(), newRating, oldReview.getComment(), timestampString);
+        Review.updateReview(newReview);
+        return ReviewResult.SUCCESS;
+    }
+    public ReviewResult editReview(Review oldReview, String newComment) {
+        if (!loggedUser.equals(oldReview.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
+        String timestampString = getCurrentTimestampString();
+        Review newReview = new Review(loggedUser, oldReview.getCourse(), oldReview.getRating(), newComment, timestampString);
+        Review.updateReview(newReview);
         return ReviewResult.SUCCESS;
     }
 
     /**
-     * Deletes the review from the database that the logged-in user had made given a course.
+     * Deletes the review from the database that the logged-in user had made.
      *
-     * @param course the course whose review is being deleted
+     * @param review the {@link Review} to delete
      */
-    public void deleteReview(Course course) {
-        Review.deleteReview(course, loggedUser);
+    public ReviewResult deleteReview(Review review) {
+        if (!loggedUser.equals(review.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
+        Review.deleteReview(review.getCourse(), loggedUser);
+        return ReviewResult.SUCCESS;
     }
 
     /**
