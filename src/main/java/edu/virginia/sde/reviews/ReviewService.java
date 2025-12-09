@@ -86,13 +86,12 @@ public class ReviewService {
     }
 
     /**
-     * Deletes a review from the database given its ID.
+     * Deletes the review from the database that the logged-in user had made given a course.
      *
-     * @param reviewId The ID of the review to be deleted.
+     * @param course the course whose review is being deleted
      */
-    public void deleteReview(int reviewId) {
-        // FIXME: need DB method to delete a review given the reviewId
-        // delete review with reviewId
+    public void deleteReview(Course course) {
+        Review.deleteReview(course, loggedUser);
     }
 
     /**
