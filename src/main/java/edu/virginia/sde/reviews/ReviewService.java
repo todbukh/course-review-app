@@ -35,6 +35,7 @@ public class ReviewService {
      * Retrieves all reviews written by the currently logged-in user.
      *
      * @return A {@code List} of {@link Review} objects associated with the logged-in user.
+     * @see Review#getReviewsFromProfile(User)  
      */
     public List<Review> getLoggedProfileReviews() {
         return Review.getReviewsFromProfile(loggedUser);
@@ -70,13 +71,13 @@ public class ReviewService {
     }
 
     /**
-     * Attempts to edit an existing review by its ID.
+     * Attempts to update both the rating and comment of an existing review.
      * The rating must be valid (1-5), and the review's timestamp is updated to the current time upon successful edit.
-     *
-     * @param reviewId The ID of the review to be updated.
+     * <i>NOTE:</i> Updating a review creates a new Review Object with a new ID and deletes the old one.
+     * @param oldReview The {@link Review} object that the user selected for editing.
      * @param newRating The new integer rating (1-5).
      * @param newComment The new comment.
-     * @return A {@link ReviewResult} indicating the outcome of the edit operation.
+     * @return A {@link ReviewResult} indicating the outcome of the edit.
      */
     public ReviewResult editReview(Review oldReview, int newRating, String newComment) {
         if (!isRatingValid(newRating)) return ReviewResult.FAILED_INVALID_RATING;
@@ -86,6 +87,14 @@ public class ReviewService {
         Review.updateReview(newReview);
         return ReviewResult.SUCCESS;
     }
+    /**
+     * Attempts to update the rating of an existing review.
+     * The rating must be valid (1-5), and the review's timestamp is updated to the current time upon successful edit.
+     * <i>NOTE:</i> Updating a review creates a new Review Object with a new ID and deletes the old one.
+     * @param oldReview The {@link Review} object that the user selected for editing.
+     * @param newRating The new integer rating (1-5).
+     * @return A {@link ReviewResult} indicating the outcome of the edit.
+     */
     public ReviewResult editReview(Review oldReview, int newRating) {
         if (!isRatingValid(newRating)) return ReviewResult.FAILED_INVALID_RATING;
         if (!loggedUser.equals(oldReview.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
@@ -94,6 +103,14 @@ public class ReviewService {
         Review.updateReview(newReview);
         return ReviewResult.SUCCESS;
     }
+    /**
+     * Attempts to update the comment of an existing review.
+     * The review's timestamp is updated to the current time upon successful edit.
+     * <i>NOTE:</i> Updating a review creates a new Review Object with a new ID and deletes the old one.
+     * @param oldReview The {@link Review} object that the user selected for editing.
+     * @param newComment The new comment.
+     * @return A {@link ReviewResult} indicating the outcome of the edit.
+     */
     public ReviewResult editReview(Review oldReview, String newComment) {
         if (!loggedUser.equals(oldReview.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
         String timestampString = getCurrentTimestampString();
@@ -105,7 +122,8 @@ public class ReviewService {
     /**
      * Deletes the review from the database that the logged-in user had made.
      *
-     * @param review the {@link Review} to delete
+     * @param review the {@link Review} to delete selected by the user
+     * @return A {@link ReviewResult} indicating the outcome of the deletion.
      */
     public ReviewResult deleteReview(Review review) {
         if (!loggedUser.equals(review.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
