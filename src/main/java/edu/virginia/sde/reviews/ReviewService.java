@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Handles business logic for the "My Reviews" and "Course Reviews" Scenes
- *
  * @author Todd Burged
  */
 public class ReviewService {

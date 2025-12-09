@@ -2,12 +2,11 @@ package edu.virginia.sde.reviews;
 
 /**
  * Handles business logic for the Log-In scene.
+ * @author Todd Burged
  */
 public class UserService {
     /**
      * Possible outcomes when attempting to create a new user profile
-     *
-     * @author Todd Burged
      */
     public enum UserCreateResult {
         /**

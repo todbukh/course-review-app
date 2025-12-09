@@ -2,12 +2,11 @@ package edu.virginia.sde.reviews;
 import java.util.*;
 /**
  * Handles business logic for Course Search Scene
+ * @author Todd Burged
  */
 public class CourseService {
     /**
      * Possible outcomes of attempting to add a new course.
-     *
-     * @author Todd Burged
      */
     public enum CourseAddResult {
         /** Course was added successfully */
