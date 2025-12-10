@@ -12,9 +12,8 @@ public class CourseReviewsApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-world.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello World");
+        FXMLLoader fxmlLoader = new FXMLLoader(CourseReviewsApplication.class.getResource("course-reviews.fxml"));        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Course Reviews");
         stage.setScene(scene);
         stage.show();
     }
