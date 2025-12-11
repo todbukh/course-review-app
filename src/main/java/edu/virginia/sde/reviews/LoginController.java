@@ -41,6 +41,25 @@ public class LoginController {
 
     @FXML
     public void onRegister(){
-        CourseReviewsApplication.switchScene("RegisterView.fxml");
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        if (username.isEmpty()) {
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Empty", "Please enter your username.");
+            return;
+        }
+        if (password.isEmpty()) {
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "Password Empty", "Please enter your password.");
+            return;
+        }
+
+        UserService.UserCreateResult result = userService.createUser(username, password);
+        if (result == UserService.UserCreateResult.FAILED_PASSWORD_TOO_SHORT) {
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "Password Error", "Password must be at least 8 characters!");
+        } else if (result == UserService.UserCreateResult.FAILED_USERNAME_TAKEN) {
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Error", "Username is already taken!" );
+        } else if (result == UserService.UserCreateResult.SUCCESS) {
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "Success", "User Created Successfully!");
+        }
     }
 }
