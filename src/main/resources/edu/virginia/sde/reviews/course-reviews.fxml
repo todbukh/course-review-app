@@ -62,10 +62,8 @@
                 <TextArea fx:id="commentArea" prefHeight="80.0" promptText="Write your experience here (optional)..." wrapText="true" />
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
                     <children>
-                        <Button fx:id="saveButton" mnemonicParsing="false" style="-fx-background-color: #007bff; -fx-text-fill: white;" text="Submit Review" />
-
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: #007bff; -fx-text-fill: white;" text="Submit Review" />
                         <Button fx:id="deleteButton" mnemonicParsing="false" style="-fx-background-color: #dc3545; -fx-text-fill: white;" text="Delete Review" visible="false" />
-
                         <Label fx:id="errorLabel" textFill="#d00000" />
                     </children>
                 </HBox>
