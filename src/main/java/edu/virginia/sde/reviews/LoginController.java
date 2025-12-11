@@ -14,39 +14,33 @@ public class LoginController {
     private PasswordField passwordField;
     @FXML
     private Button loginButton;
+    @FXML
+    private Button registerButton;
 
     private final UserService userService = new UserService();
 
     @FXML
-    public void initialize() {
-        loginButton.setOnAction(e -> handleLogin());
-    }
-
-    private static void showAlert(Alert.AlertType alertType, String title, String message){
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.show();
-    }
-
-    @FXML
-    public void handleLogin() {
+    public void onLogin() {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
         if (username.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Username Empty", "Please enter your username");
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Empty", "Please enter your username.");
             return;
         }
         if (password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Password Empty", "Please enter your password");
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "Password Empty", "Please enter your password.");
             return;
         }
 
         User user = userService.login(username, password);
         if (user == null) {
-            showAlert(Alert.AlertType.CONFIRMATION, "Login Failed", "Please enter correct username and password");
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "Login Failed", "Please enter correct username and password!");
         }
+    }
+
+    @FXML
+    public void onRegister(){
+        CourseReviewsApplication.setRoot("RegisterView.fxml");
     }
 }
