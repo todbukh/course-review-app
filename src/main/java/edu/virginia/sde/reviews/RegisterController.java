@@ -50,12 +50,12 @@ public class RegisterController {
         } else if (result == UserService.UserCreateResult.FAILED_USERNAME_TAKEN) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Error", "Username is already taken!" );
         } else if (result == UserService.UserCreateResult.SUCCESS) {
-            CourseReviewsApplication.setRoot("LoginView.fxml");
+            CourseReviewsApplication.switchScene("LoginView.fxml");
         }
     }
 
     @FXML
     private void onCancel() {
-        CourseReviewsApplication.setRoot("LoginView.fxml");
+        CourseReviewsApplication.switchScene("LoginView.fxml");
     }
 }

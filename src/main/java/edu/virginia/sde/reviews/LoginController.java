@@ -41,6 +41,6 @@ public class LoginController {
 
     @FXML
     public void onRegister(){
-        CourseReviewsApplication.setRoot("RegisterView.fxml");
+        CourseReviewsApplication.switchScene("RegisterView.fxml");
     }
 }
