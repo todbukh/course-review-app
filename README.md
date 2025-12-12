@@ -27,11 +27,11 @@ Database Layer
 * ```Course.java & CourseTest.java```
 * ```Review.java & ReviewTest.java```
 * ```User.java & UserTest.java```
-### [Author 3 - replace this with their name]
 
-* Author 3 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+### Nate Stevenson
+
+* Built the Course Reviews UI and ```CourseReviewsController.java```
+ 
 
 ### [Author 4 - replace this with their name]
 
