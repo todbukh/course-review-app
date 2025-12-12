@@ -9,6 +9,10 @@ public class CourseReviewsController {
 
     @FXML
     public Label courseInfoLabel;
+
+    @FXML
+    public Label averageRatingLabel;
+
     @FXML
     public ListView<Review> reviewListView;
     @FXML
@@ -37,6 +41,9 @@ public class CourseReviewsController {
     private void refreshReviews() {
         reviewsData.clear();
         reviewsData.addAll(reviewService.getReviewsForCourse(currentCourse));
+
+        double avg = reviewService.getCourseAverageRating(currentCourse);
+        averageRatingLabel.setText(String.format("Average Rating: %.2f", avg));
     }
 
     @FXML
@@ -55,7 +62,7 @@ public class CourseReviewsController {
         if (result == ReviewService.ReviewResult.SUCCESS) {
             errorLabel.setText("");
             commentArea.clear();
-            refreshReviews();
+            refreshReviews(); // This will now update the list AND the average label
         } else {
             errorLabel.setText("Error: " + result.toString());
         }
