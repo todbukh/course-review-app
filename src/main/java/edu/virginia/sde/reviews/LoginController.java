@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 
 public class LoginController {
 
+    private final UserService userService = new UserService();
+
     @FXML
     private TextField usernameField;
     @FXML
@@ -16,8 +18,6 @@ public class LoginController {
     private Button loginButton;
     @FXML
     private Button registerButton;
-
-    private final UserService userService = new UserService();
 
     @FXML
     public void onLogin() {
