@@ -12,7 +12,7 @@ import java.util.List;
 public class CourseSearchController {
 
     private final CourseService courseService = new CourseService();
-    private User loggedInUser;
+    private User loggedUser;
     private ReviewService reviewService;
 
     @FXML
@@ -73,7 +73,7 @@ public class CourseSearchController {
     }
 
     public void setLoggedInUser(User user) {
-        this.loggedInUser = user;
+        this.loggedUser = user;
         this.reviewService = new ReviewService(user);
         initRatingColumn();
         refreshCourses();
@@ -155,12 +155,12 @@ public class CourseSearchController {
 
     @FXML
     public void onMyReviews(){
-        CourseReviewsApplication.switchScene("my-reviews");
+        MyReviewsController controller = CourseReviewsApplication.switchScene("my-reviews.fxml");
+        controller.setLoggedInUser(loggedUser);
     }
 
     @FXML
     public void onLogout() {
         CourseReviewsApplication.switchScene("login.fxml");
     }
-
 }
