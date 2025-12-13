@@ -36,7 +36,7 @@ public class CourseReviewsController {
     private ReviewService reviewService;
     private Course currentCourse;
 
-    // If the user has a review, we store it here so we can edit/delete it later
+    // The review object belonging to the current user (if one exists)
     private Review myExistingReview;
 
     private ObservableList<Review> reviewsData = FXCollections.observableArrayList();
@@ -44,12 +44,20 @@ public class CourseReviewsController {
     public void initialize() {
         ratingChoiceBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
 
-        // --- 1. Setup Table Columns ---
+        // 1. Setup Table Columns
         ratingCol.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().getRating()));
         timestampCol.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getTimestamp()));
         commentCol.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getComment()));
 
         reviewTable.setItems(reviewsData);
+
+        reviewTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                displayReview(newSelection);
+            } else {
+                resetFormState();
+            }
+        });
     }
 
     public void setContext(User user, Course course) {
@@ -60,7 +68,6 @@ public class CourseReviewsController {
         courseInfoLabel.setText(course.getSubject() + " " + course.getCourseNumber() + ": " + course.getCourseName());
 
         refreshReviews();
-        checkIfUserHasReview();
     }
 
     private void refreshReviews() {
@@ -69,24 +76,64 @@ public class CourseReviewsController {
 
         double avg = reviewService.getCourseAverageRating(currentCourse);
         averageRatingLabel.setText(String.format("Average Rating: %.2f", avg));
+
+        try {
+            myExistingReview = reviewService.getUserReview(currentCourse, loggedUser);
+        } catch (ReviewDoesNotExistException e) {
+            myExistingReview = null;
+        }
+        resetFormState();
     }
 
     /**
-     * Checks if the user has already reviewed this course.
-     * If yes -> Switch to "Edit Mode" (Populate fields, show Delete button).
-     * If no  -> Switch to "Add Mode" (Empty fields, hide Delete button).
+     * Logic to display a specific review in the bottom panel.
+     * If it's NOT mine, lock it (Read Only).
+     * If it IS mine, unlock it (Edit Mode).
      */
-    private void checkIfUserHasReview() {
-        try {
-            myExistingReview = reviewService.getUserReview(currentCourse, loggedUser);
+    private void displayReview(Review review) {
+        ratingChoiceBox.setValue(review.getRating());
+        commentArea.setText(review.getComment());
 
+        boolean isMyReview = review.getUser().getUsername().equals(loggedUser.getUsername());
+
+        if (isMyReview) {
+
+            saveButton.setVisible(true);
+            saveButton.setText("Update Review");
+            deleteButton.setVisible(true);
+
+            commentArea.setEditable(true);
+            ratingChoiceBox.setDisable(false);
+        } else {
+            // read-only if not user's review
+            saveButton.setVisible(false); // Hide submit button
+            deleteButton.setVisible(false); // Hide delete button
+
+            commentArea.setEditable(false); // Cannot type
+            ratingChoiceBox.setDisable(true); // Cannot change rating
+        }
+    }
+
+    /**
+     * Resets the form to its default state:
+     * - If I have a review -> Edit Mode
+     * - If I don't -> Add Mode
+     */
+    private void resetFormState() {
+        reviewTable.getSelectionModel().clearSelection(); // Clear table highlight
+
+        commentArea.setEditable(true);
+        ratingChoiceBox.setDisable(false);
+        saveButton.setVisible(true);
+
+        if (myExistingReview != null) {
+            // --- EDIT MODE (Default) ---
             ratingChoiceBox.setValue(myExistingReview.getRating());
             commentArea.setText(myExistingReview.getComment());
             saveButton.setText("Update Review");
             deleteButton.setVisible(true);
-
-        } catch (ReviewDoesNotExistException e) {
-            myExistingReview = null;
+        } else {
+            // --- ADD MODE (Default) ---
             ratingChoiceBox.setValue(null);
             commentArea.clear();
             saveButton.setText("Submit Review");
@@ -115,7 +162,6 @@ public class CourseReviewsController {
         }
 
         refreshReviews();
-        checkIfUserHasReview(); // Re-check state to update UI
     }
 
     @FXML
@@ -123,9 +169,8 @@ public class CourseReviewsController {
         if (myExistingReview != null) {
             reviewService.deleteReview(myExistingReview);
             AlertUtil.showAlert(Alert.AlertType.INFORMATION, "Deleted", "Your review has been deleted.");
-
+            myExistingReview = null; // Clear local reference
             refreshReviews();
-            checkIfUserHasReview(); // reset to "Add Mode"
         }
     }
 
