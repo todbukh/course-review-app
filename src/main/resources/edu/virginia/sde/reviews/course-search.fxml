@@ -15,8 +15,12 @@
                 <Label text="Course Search" styleClass="title"/>
                 <BorderPane>
                     <right>
-                        <Button text="Log Out" styleClass="header-button"
-                                fx:id="logOutButton" onAction="#onLogout"/>
+                        <HBox styleClass="spaced">
+                            <Button text="My Reviews" styleClass="header-button"
+                                    fx:id="myReviewsButton" onAction="#onMyReviews"/>
+                            <Button text="Log Out" styleClass="header-button"
+                                    fx:id="logOutButton" onAction="#onLogout"/>
+                        </HBox>
                     </right>
                 </BorderPane>
             </StackPane>
@@ -46,10 +50,4 @@
             </columns>
         </TableView>
     </center>
-    <bottom>
-        <VBox styleClass="padded" alignment="CENTER">
-            <Button text="My Reviews"
-                    fx:id="myReviewsButton" onAction="#onMyReviews"/>
-        </VBox>
-    </bottom>
 </BorderPane>

@@ -11,7 +11,7 @@
             prefHeight="720" prefWidth="1280">
     <top>
         <StackPane styleClass="header">
-            <Label text="Login" styleClass="title"/>
+            <Label text="Log In" styleClass="title"/>
             <BorderPane>
                 <right>
                     <Button text="⏻" styleClass="header-button"
