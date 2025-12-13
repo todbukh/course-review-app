@@ -19,41 +19,41 @@ public class UserTest {
     }
 
     @BeforeEach
-    public void createProfile() {
+    public void createUser() {
         this.user = new User("username", "password");
     }
 
     @Test
     public void insertData() {
-        User.insertProfile(this.user);
+        User.insertUser(this.user);
         assertTrue(User.usernameExists(this.user.getUsername()));
     }
 
     @Test
-    public void profileExists_false() {
-        User.insertProfile(this.user);
+    public void UserExists_false() {
+        User.insertUser(this.user);
         assertFalse(User.usernameExists("not_username"));
     }
 
     @Test
-    public void profileExists_false_emptyDB() {
+    public void UserExists_false_emptyDB() {
         assertFalse(User.usernameExists(this.user.getUsername()));
     }
 
     @Test
-    public void profileExists_false_null() {
+    public void UserExists_false_null() {
         assertFalse(User.usernameExists(null));
     }
 
     @Test
-    public void getProfile_true() {
-        User.insertProfile(this.user);
-        assertTrue(User.getProfile(this.user).equals(this.user));
+    public void getUser_true() {
+        User.insertUser(this.user);
+        assertTrue(User.getUser(this.user).equals(this.user));
     }
 
     @Test
-    public void getProfile_null() {
-        User.insertProfile(this.user);
-        assertFalse(this.user.equals(User.getProfile(null)));
+    public void getUser_null() {
+        User.insertUser(this.user);
+        assertFalse(this.user.equals(User.getUser(null)));
     }
 }

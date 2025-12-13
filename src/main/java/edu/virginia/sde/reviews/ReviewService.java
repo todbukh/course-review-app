@@ -130,6 +130,16 @@ public class ReviewService {
         return ReviewResult.SUCCESS;
     }
 
+    public Review getUserReview(Course course, User user) throws ReviewDoesNotExistException{
+        Review review = null;
+        try {
+            review = Review.getReviewFromCourseAndProfile(course, user);
+        } catch (ReviewDoesNotExistException e) {
+            throw new ReviewDoesNotExistException("Review doesn't exist");
+        }
+        return review;
+    }
+
     /**
      * Calculates the average rating for a specified course.
      * The result is rounded to exactly two decimal places. Returns 0.0 if no reviews exist for the course.
