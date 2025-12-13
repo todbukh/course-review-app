@@ -179,4 +179,8 @@ public class Review {
             throw new IllegalStateException("Course must be in database!");
         }
     }
+    @Override
+    public String toString() {
+        return rating + "/5: " + comment + " (" + timestamp + ")";
+    }
 }
