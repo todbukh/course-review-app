@@ -26,7 +26,7 @@ public class ReviewTest {
         Course course = new Course("CS", 1550, "Intro");
         User user1 = new User("user", "pass");
         Course.insertCourse(course);
-        User.insertProfile(user1);
+        User.insertUser(user1);
         Review review1 = new Review(
                 user1,
                 course,
@@ -52,7 +52,7 @@ public class ReviewTest {
         Course course = new Course("CS", 1550, "Intro");
         User user1 = new User("user", "pass");
         Course.insertCourse(course);
-        User.insertProfile(user1);
+        User.insertUser(user1);
         Review review1 = new Review(
                 user1,
                 course,
@@ -75,9 +75,9 @@ public class ReviewTest {
         User user3 = new User("user2", "pass");
         Course.insertCourse(course);
         Course.insertCourse(otherCourse);
-        User.insertProfile(user1);
-        User.insertProfile(user2);
-        User.insertProfile(user3);
+        User.insertUser(user1);
+        User.insertUser(user2);
+        User.insertUser(user3);
 
         Review review1 = new Review(
                 user1,
@@ -127,9 +127,9 @@ public class ReviewTest {
         User user2 = new User("user1", "pass");
         User user3 = new User("user2", "pass");
         Course.insertCourse(course);
-        User.insertProfile(user1);
-        User.insertProfile(user2);
-        User.insertProfile(user3);
+        User.insertUser(user1);
+        User.insertUser(user2);
+        User.insertUser(user3);
 
         Review review1 = new Review(
                 user1,
@@ -164,8 +164,8 @@ public class ReviewTest {
         User user2 = new User("user1", "pass");
         Course.insertCourse(course);
         Course.insertCourse(otherCourse);
-        User.insertProfile(user1);
-        User.insertProfile(user2);
+        User.insertUser(user1);
+        User.insertUser(user2);
 
         Review review1 = new Review(
                 user1,
