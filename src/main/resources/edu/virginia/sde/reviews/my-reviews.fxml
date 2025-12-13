@@ -12,10 +12,14 @@
              prefHeight="720" prefWidth="1280">
 
     <top>
-        <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-padding: 10;">
-            <Button text="← Back" onAction="#onBack"/>
-            <Label text="My Reviews" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-        </HBox>
+        <BorderPane style="-fx-padding: 10;">
+            <left>
+                <Button text="← Back" onAction="#onBack"/>
+            </left>
+            <center>
+                <Label text="My Reviews" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </center>
+        </BorderPane>
     </top>
 
     <center>

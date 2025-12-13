@@ -76,8 +76,8 @@ public class MyReviewsController {
     }
 
     private void onReviewClick(Review review) {
-        // TODO switch to course review scene
-        return;
+        CourseReviewsController controller = CourseReviewsApplication.switchScene("course-reviews.fxml");
+        controller.setContext(loggedUser, review.getCourse());
     }
 
     private void refreshReviews() {

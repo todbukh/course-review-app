@@ -94,8 +94,8 @@ public class CourseSearchController {
     }
 
     private void onCourseClick(Course course) {
-        // TODO switch to course review scene
-        return;
+        CourseReviewsController controller = CourseReviewsApplication.switchScene("course-reviews.fxml");
+        controller.setContext(loggedUser, course);
     }
 
     @FXML

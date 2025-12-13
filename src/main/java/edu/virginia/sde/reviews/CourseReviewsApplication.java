@@ -29,7 +29,7 @@ public class CourseReviewsApplication extends Application {
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
         switchScene("login.fxml");
-        stage.setTitle("Course Reviews - Login");
+        stage.setTitle("Course Reviews");
         stage.show();
     }
 

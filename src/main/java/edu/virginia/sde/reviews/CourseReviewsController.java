@@ -22,6 +22,7 @@ public class CourseReviewsController {
     @FXML
     public Label errorLabel;
 
+    private User loggedUser;
     private ReviewService reviewService;
     private Course currentCourse;
     private ObservableList<Review> reviewsData = FXCollections.observableArrayList();
@@ -31,7 +32,13 @@ public class CourseReviewsController {
         reviewListView.setItems(reviewsData);
     }
 
+    public void onBack() {
+        CourseSearchController controller = CourseReviewsApplication.switchScene("course-search.fxml");
+        controller.setLoggedInUser(loggedUser);
+    }
+
     public void setContext(User user, Course course) {
+        this.loggedUser = user;
         this.currentCourse = course;
         this.reviewService = new ReviewService(user);
         courseInfoLabel.setText(course.getSubject() + " " + course.getCourseNumber());
