@@ -12,7 +12,7 @@
     <top>
         <StackPane styleClass="header">
             <Label text="Login" styleClass="title"/>
-            <BorderPane styleClass="padded">
+            <BorderPane>
                 <right>
                     <Button text="⏻" styleClass="header-button"
                             onAction="#onClose"

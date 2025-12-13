@@ -14,7 +14,7 @@
     <top>
         <StackPane styleClass="header">
             <Label text="My Reviews" styleClass="title"/>
-            <BorderPane style="-fx-padding: 10;">
+            <BorderPane>
                 <left>
                     <Button text="← Back" styleClass="header-button" onAction="#onBack"/>
                 </left>

@@ -12,7 +12,7 @@
     <top>
         <StackPane styleClass="header">
             <Label text="Register" styleClass="title"/>
-            <BorderPane styleClass="padded">
+            <BorderPane>
                 <left>
                     <Button text="← Back" styleClass="header-button" onAction="#onBack"/>
                 </left>

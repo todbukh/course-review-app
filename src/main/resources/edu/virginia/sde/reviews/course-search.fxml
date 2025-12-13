@@ -13,7 +13,7 @@
         <VBox styleClass="spaced" alignment="CENTER">
             <StackPane styleClass="header">
                 <Label text="Course Search" styleClass="title"/>
-                <BorderPane styleClass="padded">
+                <BorderPane>
                     <right>
                         <Button text="Log Out" styleClass="header-button"
                                 fx:id="logOutButton" onAction="#onLogout"/>

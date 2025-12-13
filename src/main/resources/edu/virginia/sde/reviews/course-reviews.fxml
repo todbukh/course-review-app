@@ -19,7 +19,7 @@
             </padding>
             <StackPane styleClass="header">
                 <Label fx:id="courseInfoLabel" text="Course Name Placeholder" styleClass="title"/>
-                <BorderPane styleClass="padded">
+                <BorderPane>
                     <left>
                         <Button text="← Back" onAction="#onBack" styleClass="header-button"/>
                     </left>
