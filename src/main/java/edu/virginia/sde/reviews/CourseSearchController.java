@@ -135,13 +135,13 @@ public class CourseSearchController {
                 AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Subject must be between 2 and 4 characters!");
                 return;
             case FAILED_EMPTY_COURSE_NUMBER:
-                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Course number cannot be empty!");
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Course Number", "Course number cannot be empty!");
                 return;
             case FAILED_INVALID_COURSE_NUMBER_CHARS:
-                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Course number cannot be empty!");
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Course Number", "Course number cannot contain non-numeric characters!");
                 return;
             case FAILED_INVALID_COURSE_NUMBER_LENGTH:
-                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Course number cannot be empty!");
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Course Number", "Course number must be 4 digits long!");
                 return;
             case FAILED_COURSE_ALREADY_EXISTS:
                 AlertUtil.showAlert(Alert.AlertType.ERROR, "Fail", "Course already exists!");

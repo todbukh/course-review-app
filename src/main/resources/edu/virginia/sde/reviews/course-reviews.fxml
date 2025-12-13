@@ -73,7 +73,6 @@
                 <Button fx:id="deleteButton" mnemonicParsing="false"
                         style="-fx-background-color: #dc3545; -fx-text-fill: white;" text="Delete Review"
                         visible="false"/>
-                <Label fx:id="errorLabel" textFill="#d00000"/>
             </HBox>
         </VBox>
     </bottom>

@@ -19,8 +19,6 @@ public class CourseReviewsController {
     public ChoiceBox<Integer> ratingChoiceBox;
     @FXML
     public TextArea commentArea;
-    @FXML
-    public Label errorLabel;
 
     private User loggedUser;
     private ReviewService reviewService;
@@ -56,7 +54,7 @@ public class CourseReviewsController {
     @FXML
     public void handleSave() {
         if (ratingChoiceBox.getValue() == null) {
-            errorLabel.setText("Please pick a rating.");
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "Fail", "Please pick a rating.");
             return;
         }
 
@@ -66,12 +64,14 @@ public class CourseReviewsController {
                 commentArea.getText()
         );
 
-        if (result == ReviewService.ReviewResult.SUCCESS) {
-            errorLabel.setText("");
-            commentArea.clear();
-            refreshReviews(); // This will now update the list AND the average label
-        } else {
-            errorLabel.setText("Error: " + result.toString());
+        switch (result) {
+            case FAILED_USER_ALREADY_REVIEWED:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Fail", "You have already reviewed this course!");
+                return;
+            case SUCCESS:
+                AlertUtil.showAlert(Alert.AlertType.CONFIRMATION, "Success", "Course Reviews saved!");
+                commentArea.clear();
+                refreshReviews();
         }
     }
 }
