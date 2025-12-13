@@ -41,6 +41,8 @@ public class CourseSearchController {
     private TableColumn<Course, String> ratingCol;
 
     @FXML
+    private Button myReviewsButton;
+    @FXML
     private Button logOutButton;
 
     @FXML
@@ -56,6 +58,18 @@ public class CourseSearchController {
                 cell -> new ReadOnlyStringWrapper(cell.getValue().getCourseName())
         );
 
+        courseTable.setRowFactory(tv -> {
+            TableRow<Course> row = new TableRow<>();
+
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 1) {
+                    Course clickedCourse = row.getItem();
+                    onCourseClick(clickedCourse);
+                }
+            });
+
+            return row;
+        });
     }
 
     public void setLoggedInUser(User user) {
@@ -77,6 +91,11 @@ public class CourseSearchController {
 
         courseData = FXCollections.observableArrayList(courses);
         courseTable.setItems(courseData);
+    }
+
+    private void onCourseClick(Course course) {
+        // TODO switch to course review scene
+        return;
     }
 
     @FXML
@@ -135,7 +154,13 @@ public class CourseSearchController {
     }
 
     @FXML
+    public void onMyReviews(){
+        CourseReviewsApplication.switchScene("my-reviews");
+    }
+
+    @FXML
     public void onLogout() {
         CourseReviewsApplication.switchScene("login.fxml");
     }
+
 }

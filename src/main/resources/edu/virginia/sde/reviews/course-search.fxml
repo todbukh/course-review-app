@@ -40,8 +40,9 @@
     </center>
 
     <bottom>
-        <VBox spacing="12" alignment="CENTER">
+        <HBox spacing="12" alignment="CENTER">
+            <Button text="My Reviews" fx:id="myReviewsButton" onAction="#onMyReviews"/>
             <Button text="Log Out" fx:id="logOutButton" onAction="#onLogout"/>
-        </VBox>
+        </HBox>
     </bottom>
 </BorderPane>
