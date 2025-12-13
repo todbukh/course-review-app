@@ -1,5 +1,6 @@
 package edu.virginia.sde.reviews;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -11,6 +12,8 @@ public class LoginController {
     private final UserService userService = new UserService();
 
     @FXML
+    private Button closeButton;
+    @FXML
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
@@ -18,6 +21,11 @@ public class LoginController {
     private Button loginButton;
     @FXML
     private Button registerButton;
+
+    @FXML
+    public void onClose() {
+        Platform.exit();
+    }
 
     @FXML
     public void onLogin() {

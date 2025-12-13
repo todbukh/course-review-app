@@ -31,7 +31,7 @@ public class MyReviewsController {
     private TableColumn<Review, String> commentCol;
 
     @FXML
-    private void onBack() {
+    public void onBack() {
         CourseSearchController controller = CourseReviewsApplication.switchScene("course-search.fxml");
         controller.setLoggedInUser(loggedUser);
     }
