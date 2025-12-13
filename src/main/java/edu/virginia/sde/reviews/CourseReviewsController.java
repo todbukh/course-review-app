@@ -102,14 +102,16 @@ public class CourseReviewsController {
             saveButton.setVisible(true);
             saveButton.setText("Update Review");
             deleteButton.setVisible(true);
-            myReviewButton.setVisible(false); // <--- HIDE IT
-
+            myReviewButton.setVisible(false);
+            if (myReviewButton != null) {
+                myReviewButton.setVisible(false);
+            }
             commentArea.setEditable(true);
             ratingChoiceBox.setDisable(false);
         } else {
             saveButton.setVisible(false);
             deleteButton.setVisible(false);
-            myReviewButton.setVisible(true); // <--- SHOW IT
+            myReviewButton.setVisible(true);
 
             if (myExistingReview != null) {
                 myReviewButton.setText("Edit My Review");
@@ -129,6 +131,10 @@ public class CourseReviewsController {
      */
     private void resetFormState() {
         reviewTable.getSelectionModel().clearSelection(); // Clear table highlight
+
+        if (myReviewButton != null) {
+            myReviewButton.setVisible(false);
+        }
 
         commentArea.setEditable(true);
         ratingChoiceBox.setDisable(false);
