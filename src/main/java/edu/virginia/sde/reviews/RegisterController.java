@@ -19,9 +19,17 @@ public class RegisterController {
     private PasswordField passwordField;
     @FXML
     private PasswordField passwordConfirmField;
-
     @FXML
     private Button registerButton;
+
+    @FXML
+    public void initialize() {
+        registerButton.disableProperty().bind(
+                usernameField.textProperty().isEmpty()
+                        .or(passwordField.textProperty().isEmpty()
+                                .or(passwordConfirmField.textProperty().isEmpty()))
+        );
+    }
 
     public void onBack() {
         CourseReviewsApplication.switchScene("login.fxml");
@@ -35,14 +43,6 @@ public class RegisterController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if (username.isEmpty()) {
-            AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Empty", "Please enter your username.");
-            return;
-        }
-        if (password.isEmpty()) {
-            AlertUtil.showAlert(Alert.AlertType.ERROR, "Password Empty", "Please enter your password.");
-            return;
-        }
         if (!password.equals(passwordConfirmField.getText())) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "Passwords Error", "Passwords do not match.");
             return;

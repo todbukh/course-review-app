@@ -37,6 +37,11 @@ public class CourseReviewsApplication extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(CourseReviewsApplication.class.getResource(fxml));
             Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(
+                    CourseReviewsApplication.class
+                            .getResource("style.css")
+                            .toExternalForm()
+            );
             primaryStage.setScene(scene);
             return loader.getController();
         } catch (IOException e) {

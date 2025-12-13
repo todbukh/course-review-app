@@ -15,7 +15,7 @@
                 <Button text="← Back" onAction="#onBack"/>
             </left>
             <center>
-                <Label text="Register" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label text="Register" styleClass="scene-title"/>
             </center>
         </BorderPane>
     </top>
@@ -27,7 +27,7 @@
                 <TextField fx:id="usernameField" promptText="Choose a username" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
                 <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <PasswordField fx:id="passwordField" promptText="Choose a password (at least 8 characters)" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <PasswordField fx:id="passwordField" promptText="Choose a password" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
                 <Label text="Confirm:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                 <PasswordField fx:id="passwordConfirmField" promptText="Confirm password" GridPane.rowIndex="2" GridPane.columnIndex="1"/>

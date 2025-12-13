@@ -12,13 +12,13 @@
     <top>
         <BorderPane style="-fx-padding: 10;">
             <center>
-                <Label text="Login"
-                       style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label text="Login" styleClass="scene-title"/>
             </center>
             <right>
-                <Button text="X"
+                <Button text="⏻" styleClass="close"
                         onAction="#onClose"
-                        focusTraversable="false"/>
+                        focusTraversable="false"
+                        tooltip="Exit application"/>
             </right>
         </BorderPane>
     </top>

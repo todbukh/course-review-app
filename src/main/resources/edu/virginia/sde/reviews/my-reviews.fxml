@@ -17,7 +17,7 @@
                 <Button text="← Back" onAction="#onBack"/>
             </left>
             <center>
-                <Label text="My Reviews" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label text="My Reviews" styleClass="scene-title""/>
             </center>
         </BorderPane>
     </top>
