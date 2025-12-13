@@ -10,17 +10,17 @@
             fx:controller="edu.virginia.sde.reviews.RegisterController"
             prefHeight="720" prefWidth="1280">
     <top>
-        <BorderPane style="-fx-padding: 10;">
-            <left>
-                <Button text="← Back" onAction="#onBack"/>
-            </left>
-            <center>
-                <Label text="Register" styleClass="scene-title"/>
-            </center>
-        </BorderPane>
+        <StackPane styleClass="header">
+            <Label text="Register" styleClass="title"/>
+            <BorderPane styleClass="padded">
+                <left>
+                    <Button text="← Back" styleClass="header-button" onAction="#onBack"/>
+                </left>
+            </BorderPane>
+        </StackPane>
     </top>
     <center>
-        <VBox spacing="12" alignment="CENTER">
+        <VBox styleClass="spaced" alignment="CENTER">
 
             <GridPane hgap="10" vgap="12" alignment="CENTER">
                 <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>

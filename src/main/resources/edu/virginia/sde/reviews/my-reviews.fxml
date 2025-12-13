@@ -12,14 +12,14 @@
              prefHeight="720" prefWidth="1280">
 
     <top>
-        <BorderPane style="-fx-padding: 10;">
-            <left>
-                <Button text="← Back" onAction="#onBack"/>
-            </left>
-            <center>
-                <Label text="My Reviews" styleClass="scene-title""/>
-            </center>
-        </BorderPane>
+        <StackPane styleClass="header">
+            <Label text="My Reviews" styleClass="title"/>
+            <BorderPane style="-fx-padding: 10;">
+                <left>
+                    <Button text="← Back" styleClass="header-button" onAction="#onBack"/>
+                </left>
+            </BorderPane>
+        </StackPane>
     </top>
 
     <center>
