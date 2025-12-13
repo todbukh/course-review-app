@@ -58,7 +58,7 @@ public class RegisterController {
                 return;
             case SUCCESS:
                 // show and wait the alert; user must hit OK to switch to log in scene.
-                AlertUtil.showAlert(Alert.AlertType.CONFIRMATION, "Success", "User Created Successfully!", true);
+                AlertUtil.showAlert(Alert.AlertType.INFORMATION, "Success", "User Created Successfully!", true);
                 CourseReviewsApplication.switchScene("login.fxml");
                 break;
         }

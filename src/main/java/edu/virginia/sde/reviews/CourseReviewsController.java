@@ -69,7 +69,7 @@ public class CourseReviewsController {
                 AlertUtil.showAlert(Alert.AlertType.ERROR, "Fail", "You have already reviewed this course!");
                 return;
             case SUCCESS:
-                AlertUtil.showAlert(Alert.AlertType.CONFIRMATION, "Success", "Course Reviews saved!");
+                AlertUtil.showAlert(Alert.AlertType.INFORMATION, "Success", "Course Reviews saved!");
                 commentArea.clear();
                 refreshReviews();
         }

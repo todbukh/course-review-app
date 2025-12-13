@@ -15,6 +15,16 @@ public class CourseSearchController {
     private User loggedUser;
     private ReviewService reviewService;
 
+    public enum CourseSearchMode {
+        SEARCH,
+        ADD
+    }
+
+    private CourseSearchMode mode = CourseSearchMode.SEARCH;
+
+    @FXML
+    private Label titleLabel;
+
     @FXML
     private TextField subjectField;
     @FXML
@@ -23,9 +33,9 @@ public class CourseSearchController {
     private TextField titleField;
 
     @FXML
-    private Button searchButton;
+    private Button primaryButton;
     @FXML
-    private Button addButton;
+    private Button secondaryButton;
 
     @FXML
     private TableView<Course> courseTable;
@@ -47,6 +57,9 @@ public class CourseSearchController {
 
     @FXML
     public void initialize() {
+
+        Label placeholder = new Label("No courses found");
+        courseTable.setPlaceholder(placeholder);
 
         subjectCol.setCellValueFactory(
                 cell -> new ReadOnlyStringWrapper(cell.getValue().getSubject())
@@ -99,7 +112,38 @@ public class CourseSearchController {
     }
 
     @FXML
-    public void onSearch(){
+    public void onPrimary(){
+        switch(mode) {
+            case SEARCH:
+                SearchCourse();
+                break;
+            case ADD:
+                AddCourse();
+                break;
+        }
+        clearInputs();
+    }
+
+    @FXML
+    public void onSecondary(){
+        switch(mode) {
+            case SEARCH:
+                mode = CourseSearchMode.ADD;
+                titleLabel.setText("Add Course");
+                primaryButton.setText("Add");
+                secondaryButton.setText("Cancel");
+                break;
+            case ADD:
+                mode = CourseSearchMode.SEARCH;
+                titleLabel.setText("Search Course");
+                primaryButton.setText("Search");
+                secondaryButton.setText("+ Add Course");
+                break;
+        }
+        clearInputs();
+    }
+
+    private void SearchCourse(){
         String subject = subjectField.getText();
         String number = numberField.getText();
         String title = titleField.getText();
@@ -110,8 +154,7 @@ public class CourseSearchController {
             courseTable.setItems(data);
     }
 
-    @FXML
-    public void onAdd(){
+    private void AddCourse(){
         String subject = subjectField.getText();
         String number = numberField.getText();
         String title = titleField.getText();
@@ -151,6 +194,12 @@ public class CourseSearchController {
                 refreshCourses();
                 break;
         }
+    }
+
+    private void clearInputs() {
+        subjectField.clear();
+        numberField.clear();
+        titleField.clear();
     }
 
     @FXML
