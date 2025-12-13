@@ -62,7 +62,7 @@ public class CourseSearchController {
         this.loggedInUser = user;
         this.reviewService = new ReviewService(user);
         initRatingColumn();
-        initCourses();
+        refreshCourses();
     }
 
     private void initRatingColumn() {
@@ -72,7 +72,7 @@ public class CourseSearchController {
         });
     }
 
-    private void initCourses() {
+    private void refreshCourses() {
         List<Course> courses = courseService.getAllCourses();
 
         courseData = FXCollections.observableArrayList(courses);
@@ -98,6 +98,40 @@ public class CourseSearchController {
         String title = titleField.getText();
 
         CourseService.CourseAddResult result = courseService.addCourse(subject, number, title);
+
+        switch (result) {
+            case FAILED_EMPTY_TITLE:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Empty Title", "Title cannot be empty!");
+                return;
+            case FAILED_TITLE_TOO_LONG:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Title Too Long", "Title cannot be longer than 50 characters!");
+                return;
+            case FAILED_EMPTY_SUBJECT:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Subject cannot be empty!");
+                return;
+            case FAILED_INVALID_SUBJECT_CHARS:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Subject cannot contain non-letter characters!");
+                return;
+            case FAILED_INVALID_SUBJECT_LENGTH:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Subject must be between 2 and 4 characters!");
+                return;
+            case FAILED_EMPTY_COURSE_NUMBER:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Course number cannot be empty!");
+                return;
+            case FAILED_INVALID_COURSE_NUMBER_CHARS:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Course number cannot be empty!");
+                return;
+            case FAILED_INVALID_COURSE_NUMBER_LENGTH:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Invalid Subject", "Course number cannot be empty!");
+                return;
+            case FAILED_COURSE_ALREADY_EXISTS:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Fail", "Course already exists!");
+                return;
+            case SUCCESS:
+                AlertUtil.showAlert(Alert.AlertType.CONFIRMATION, "Success", "Course added successfully!");
+                refreshCourses();
+                break;
+        }
     }
 
     @FXML

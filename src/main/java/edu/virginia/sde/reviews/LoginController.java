@@ -36,6 +36,7 @@ public class LoginController {
         User user = userService.login(username, password);
         if (user == null) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "Login Failed", "Please enter correct username and password!");
+            return;
         }
 
         CourseSearchController controller = CourseReviewsApplication.switchScene("course-search.fxml");
@@ -58,12 +59,16 @@ public class LoginController {
         }
 
         UserService.UserCreateResult result = userService.createUser(username, password);
-        if (result == UserService.UserCreateResult.FAILED_PASSWORD_TOO_SHORT) {
-            AlertUtil.showAlert(Alert.AlertType.ERROR, "Password Error", "Password must be at least 8 characters!");
-        } else if (result == UserService.UserCreateResult.FAILED_USERNAME_TAKEN) {
-            AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Error", "Username is already taken!" );
-        } else if (result == UserService.UserCreateResult.SUCCESS) {
-            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "Success", "User Created Successfully!");
+        switch(result){
+            case FAILED_PASSWORD_TOO_SHORT:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Password Error", "Password must be at least 8 characters!");
+                return;
+            case FAILED_USERNAME_TAKEN:
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Error", "Username is already taken!" );
+                return;
+            case SUCCESS:
+                AlertUtil.showAlert(Alert.AlertType.CONFIRMATION, "Success", "User Created Successfully!");
+                break;
         }
     }
 }
