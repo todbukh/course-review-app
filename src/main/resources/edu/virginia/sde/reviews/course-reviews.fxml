@@ -60,6 +60,7 @@
             <HBox alignment="CENTER_LEFT" spacing="15.0">
                 <Button fx:id="saveButton" onAction="#handleSave" text="Submit Review" />
                 <Button fx:id="deleteButton" onAction="#handleDelete" style="-fx-background-color: #d32f2f;" text="Delete Review" visible="false" />
+                <Button fx:id="myReviewButton" onAction="#handleMyReview" text="Write/Edit My Review" visible="false"/>
             </HBox>
         </VBox>
     </bottom>

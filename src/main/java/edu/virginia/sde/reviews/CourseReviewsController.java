@@ -31,6 +31,8 @@ public class CourseReviewsController {
     public Button saveButton;
     @FXML
     public Button deleteButton;
+    @FXML
+    public Button myReviewButton;
 
     private User loggedUser;
     private ReviewService reviewService;
@@ -97,20 +99,26 @@ public class CourseReviewsController {
         boolean isMyReview = review.getUser().getUsername().equals(loggedUser.getUsername());
 
         if (isMyReview) {
-
             saveButton.setVisible(true);
             saveButton.setText("Update Review");
             deleteButton.setVisible(true);
+            myReviewButton.setVisible(false); // <--- HIDE IT
 
             commentArea.setEditable(true);
             ratingChoiceBox.setDisable(false);
         } else {
-            // read-only if not user's review
-            saveButton.setVisible(false); // Hide submit button
-            deleteButton.setVisible(false); // Hide delete button
+            saveButton.setVisible(false);
+            deleteButton.setVisible(false);
+            myReviewButton.setVisible(true); // <--- SHOW IT
 
-            commentArea.setEditable(false); // Cannot type
-            ratingChoiceBox.setDisable(true); // Cannot change rating
+            if (myExistingReview != null) {
+                myReviewButton.setText("Edit My Review");
+            } else {
+                myReviewButton.setText("Write a Review");
+            }
+
+            commentArea.setEditable(false);
+            ratingChoiceBox.setDisable(true);
         }
     }
 
@@ -172,6 +180,11 @@ public class CourseReviewsController {
             myExistingReview = null; // Clear local reference
             refreshReviews();
         }
+    }
+
+    @FXML
+    public void handleMyReview() {
+        resetFormState();
     }
 
     public void onBack() {
