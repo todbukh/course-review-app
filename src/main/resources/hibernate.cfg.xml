@@ -4,11 +4,9 @@
         <property name="format_sql">false</property>
         <property name="dialect">org.hibernate.community.dialect.SQLiteDialect</property>
         <property name="connection.driver_class">org.sqlite.JDBC</property>
-        <property name="connection.url">jdbc:sqlite:C:/Users/marti/IdeaProjects/project-final-jfx8vc-gdt2cf-arv4xc-cuz2xn/database.sqlite</property>
+        <property name="hibernate.connection.url">jdbc:sqlite:database.sqlite</property>
         <property name="hibernate.current_session_context_class">thread</property>
-
         <property name="hibernate.hbm2ddl.auto" >update</property>
-
         <mapping class="edu.virginia.sde.reviews.Course" />
         <mapping class="edu.virginia.sde.reviews.User" />
         <mapping class="edu.virginia.sde.reviews.Review" />

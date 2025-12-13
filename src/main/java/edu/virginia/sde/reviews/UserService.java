@@ -2,12 +2,11 @@ package edu.virginia.sde.reviews;
 
 /**
  * Handles business logic for the Log-In scene.
+ * @author Todd Burged
  */
 public class UserService {
     /**
      * Possible outcomes when attempting to create a new user profile
-     *
-     * @author Todd Burged
      */
     public enum UserCreateResult {
         /**
@@ -24,11 +23,10 @@ public class UserService {
      * @param username the username
      * @param password the password
      * @return The {@link User} if login succeeds, or null if credentials don't match
+     * @see User#getUser(User)
      */
     public User login(String username, String password) {
-        // FIXME: need a DB method to find and return a Profile object given a username AND password, null if not found.
-        User loggedUser = User.getUser(new User(username, password));
-        return loggedUser;
+        return User.getUser(new User(username, password));
     }
     /**
      * Attempts to create a new profile with a specified username and password.
@@ -39,8 +37,6 @@ public class UserService {
      * @return A {@link UserCreateResult} status indicating success or the specific reason for failure.
      */
     public UserCreateResult createUser(String username, String password) {
-        // FIXME: need a boolean method to check if username exists in DB
-        // if username exists return ProfileCreateResult.FAILED_USERNAME_TAKEN
         if(User.usernameExists(username)) return UserCreateResult.FAILED_USERNAME_TAKEN;
         if (password.length() < 8) return UserCreateResult.FAILED_PASSWORD_TOO_SHORT;
         User user = new User(username, password);

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="edu.virginia.sde.reviews.LoginController"
+            prefHeight="720" prefWidth="1280">
+    <top>
+        <StackPane styleClass="header">
+            <Label text="Log In" styleClass="title"/>
+            <BorderPane>
+                <right>
+                    <Button text="⏻" styleClass="header-button"
+                            onAction="#onClose"
+                            focusTraversable="false"/>
+                </right>
+            </BorderPane>
+        </StackPane>
+    </top>
+    <center>
+        <VBox styleClass="spaced" alignment="CENTER">
+
+            <GridPane hgap="10" vgap="12" alignment="CENTER">
+                <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="usernameField" promptText="Enter your username" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <PasswordField fx:id="passwordField" promptText="Enter your password" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <Button text="Log In" fx:id="loginButton" onAction="#onLogin"/>
+
+            <HBox spacing="5" alignment="CENTER">
+                <Label text="Don't have an account?" />
+                <Hyperlink text="Register here" onAction="#onRegister"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

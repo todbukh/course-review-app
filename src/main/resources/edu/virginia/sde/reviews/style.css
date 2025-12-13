@@ -1,0 +1,86 @@
+/* UVA Color PALETTE: https://brand.virginia.edu/brand-essentials/color */
+
+.uva-themed {
+    -fx-base: #232D4B;     /* UVA Blue */
+    -fx-accent: #E57200;   /* UVA Orange */
+}
+
+.root {
+    -fx-font-family: "System";
+    -fx-control-inner-background: #F7F7F7;
+    -fx-text-base-color: #2E2E2E;
+    -fx-text-inner-color: #2E2E2E;
+}
+
+.padded {
+    -fx-padding: 16;
+}
+
+.spaced {
+    -fx-spacing: 12;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #3A4266;
+}
+
+/* ===== Button Design ===== */
+.button {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 6 14 6 14;
+    -fx-background-color: #232D4B;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+
+.button:hover {
+    -fx-opacity: 0.9;
+}
+
+.button:disabled {
+    -fx-opacity: 0.6;
+}
+
+/* ===== Header Design ===== */
+.header {
+    -fx-background-color: #232D4B;
+    -fx-padding: 16;
+    -fx-min-height: 64;
+    -fx-pref-height: 64;
+    -fx-max-height: 64;
+}
+
+.header .title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.header BorderPane {
+    -fx-pref-width: 100%;
+    -fx-pref-height: 100%;
+}
+
+.header-button {
+    -fx-font-size: 16px;
+    -fx-background-radius: 18;
+    -fx-pref-height: 32px;
+    -fx-min-width: 32px;
+    -fx-background-color: transparent;
+}
+
+.header-button:hover {
+    -fx-opacity: 1.0;
+    -fx-background-color:#E57200;
+}
+
+/* ===== Table Design ===== */
+.table-view {
+    -fx-font-size: 13px;
+}
+
+.table-row-cell:filled:hover {
+    -fx-background-color: #DADADA;
+}

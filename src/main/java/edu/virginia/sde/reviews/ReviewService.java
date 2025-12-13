@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Handles business logic for the "My Reviews" and "Course Reviews" Scenes
- *
  * @author Todd Burged
  */
 public class ReviewService {
@@ -16,6 +15,8 @@ public class ReviewService {
         FAILED_INVALID_RATING,
         /** The currently logged-in user has already submitted a review for this course */
         FAILED_USER_ALREADY_REVIEWED,
+        /** The currently logged-in user attempted to edit or delete a review that is not his own. */ // This should not happen, but it's here just in case
+        FAILED_UNAUTHORIZED_USER,
         SUCCESS
     }
     private final User loggedUser;
@@ -33,10 +34,10 @@ public class ReviewService {
      * Retrieves all reviews written by the currently logged-in user.
      *
      * @return A {@code List} of {@link Review} objects associated with the logged-in user.
+     * @see Review#getReviewsFromProfile(User)  
      */
     public List<Review> getLoggedProfileReviews() {
-        //FIXME: need DB method to get Reviews by user
-        return null;
+        return Review.getReviewsFromProfile(loggedUser);
     }
     /**
      * Retrieves all reviews associated with a specific course.
@@ -69,30 +70,64 @@ public class ReviewService {
     }
 
     /**
-     * Attempts to edit an existing review by its ID.
+     * Attempts to update both the rating and comment of an existing review.
      * The rating must be valid (1-5), and the review's timestamp is updated to the current time upon successful edit.
-     *
-     * @param reviewId The ID of the review to be updated.
+     * <i>NOTE:</i> Updating a review creates a new Review Object with a new ID and deletes the old one.
+     * @param oldReview The {@link Review} object that the user selected for editing.
      * @param newRating The new integer rating (1-5).
      * @param newComment The new comment.
-     * @return A {@link ReviewResult} indicating the outcome of the edit operation.
+     * @return A {@link ReviewResult} indicating the outcome of the edit.
      */
-    public ReviewResult editReview(int reviewId, int newRating, String newComment) {
-        // FIXME: need DB method to update a review given the reviewId
+    public ReviewResult editReview(Review oldReview, int newRating, String newComment) {
         if (!isRatingValid(newRating)) return ReviewResult.FAILED_INVALID_RATING;
+        if (!loggedUser.equals(oldReview.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
         String timestampString = getCurrentTimestampString();
-        // update the review with reviewID with the new rating, comment, and timestamp
+        Review newReview = new Review(loggedUser, oldReview.getCourse(), newRating, newComment, timestampString);
+        Review.updateReview(newReview);
+        return ReviewResult.SUCCESS;
+    }
+    /**
+     * Attempts to update the rating of an existing review.
+     * The rating must be valid (1-5), and the review's timestamp is updated to the current time upon successful edit.
+     * <i>NOTE:</i> Updating a review creates a new Review Object with a new ID and deletes the old one.
+     * @param oldReview The {@link Review} object that the user selected for editing.
+     * @param newRating The new integer rating (1-5).
+     * @return A {@link ReviewResult} indicating the outcome of the edit.
+     */
+    public ReviewResult editReview(Review oldReview, int newRating) {
+        if (!isRatingValid(newRating)) return ReviewResult.FAILED_INVALID_RATING;
+        if (!loggedUser.equals(oldReview.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
+        String timestampString = getCurrentTimestampString();
+        Review newReview = new Review(loggedUser, oldReview.getCourse(), newRating, oldReview.getComment(), timestampString);
+        Review.updateReview(newReview);
+        return ReviewResult.SUCCESS;
+    }
+    /**
+     * Attempts to update the comment of an existing review.
+     * The review's timestamp is updated to the current time upon successful edit.
+     * <i>NOTE:</i> Updating a review creates a new Review Object with a new ID and deletes the old one.
+     * @param oldReview The {@link Review} object that the user selected for editing.
+     * @param newComment The new comment.
+     * @return A {@link ReviewResult} indicating the outcome of the edit.
+     */
+    public ReviewResult editReview(Review oldReview, String newComment) {
+        if (!loggedUser.equals(oldReview.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
+        String timestampString = getCurrentTimestampString();
+        Review newReview = new Review(loggedUser, oldReview.getCourse(), oldReview.getRating(), newComment, timestampString);
+        Review.updateReview(newReview);
         return ReviewResult.SUCCESS;
     }
 
     /**
-     * Deletes a review from the database given its ID.
+     * Deletes the review from the database that the logged-in user had made.
      *
-     * @param reviewId The ID of the review to be deleted.
+     * @param review the {@link Review} to delete selected by the user
+     * @return A {@link ReviewResult} indicating the outcome of the deletion.
      */
-    public void deleteReview(int reviewId) {
-        // FIXME: need DB method to delete a review given the reviewId
-        // delete review with reviewId
+    public ReviewResult deleteReview(Review review) {
+        if (!loggedUser.equals(review.getUser())) return ReviewResult.FAILED_UNAUTHORIZED_USER;
+        Review.deleteReview(review.getCourse(), loggedUser);
+        return ReviewResult.SUCCESS;
     }
 
     /**
@@ -103,7 +138,7 @@ public class ReviewService {
      * @return The average rating rounded to two decimal places.
      */
     public double getCourseAverageRating(Course course) {
-        double avg = getReviewsForCourse(course).stream().mapToInt(Review::getRating).average().orElse(0.0);
+        double avg = Review.getAverageRating(course);
         return Math.round(avg * 100.0) / 100.0;
     }
 
