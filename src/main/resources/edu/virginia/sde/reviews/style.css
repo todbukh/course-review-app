@@ -35,8 +35,20 @@
     -fx-font-size: 14;
 }
 
+.button.secondary {
+    -fx-background-color: #FBFBFB;
+    -fx-text-fill:#E57200;
+    -fx-border-color: #E57200;
+    -fx-font-size: 12;
+    -fx-padding: 5 10 5 10;
+}
+
 .button:hover {
     -fx-opacity: 0.9;
+}
+
+.button.secondary:hover {
+    -fx-background-color: white;
 }
 
 .button:disabled {

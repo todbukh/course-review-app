@@ -31,12 +31,9 @@
                 <TextField fx:id="subjectField" promptText="Subject" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                 <TextField fx:id="numberField" promptText="Number" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
                 <TextField fx:id="titleField" promptText="Title" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                <Button text="Search" fx:id="searchButton" onAction="#onSearch" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                <Button text="+ Add Course" styleClass="secondary" fx:id="addButton" onAction="#onAdd" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
             </GridPane>
-
-            <HBox styleClass="spaced, padded" alignment="CENTER">
-                <Button text="Search" fx:id="searchButton" onAction="#onSearch"/>
-                <Button text="Add Course" fx:id="addButton" onAction="#onAdd"/>
-            </HBox>
         </VBox>
     </top>
 
