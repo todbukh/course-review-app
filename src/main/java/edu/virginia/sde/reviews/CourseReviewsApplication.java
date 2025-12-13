@@ -16,6 +16,16 @@ public class CourseReviewsApplication extends Application {
     }
 
     @Override
+    public void init() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            System.out.println("SQLite JDBC driver loaded");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Failed to load SQLite JDBC driver", e);
+        }
+    }
+
+    @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
         switchScene("login.fxml");
