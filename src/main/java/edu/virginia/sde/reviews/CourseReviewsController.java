@@ -14,7 +14,6 @@ public class CourseReviewsController {
     @FXML
     public Label averageRatingLabel;
 
-    // --- CHANGED: TableView instead of ListView ---
     @FXML
     public TableView<Review> reviewTable;
     @FXML
@@ -79,17 +78,14 @@ public class CourseReviewsController {
      */
     private void checkIfUserHasReview() {
         try {
-            // Your team added this method to ReviewService - it's perfect!
             myExistingReview = reviewService.getUserReview(currentCourse, loggedUser);
 
-            // --- EDIT MODE ---
             ratingChoiceBox.setValue(myExistingReview.getRating());
             commentArea.setText(myExistingReview.getComment());
             saveButton.setText("Update Review");
             deleteButton.setVisible(true);
 
         } catch (ReviewDoesNotExistException e) {
-            // --- ADD MODE ---
             myExistingReview = null;
             ratingChoiceBox.setValue(null);
             commentArea.clear();
@@ -129,7 +125,7 @@ public class CourseReviewsController {
             AlertUtil.showAlert(Alert.AlertType.INFORMATION, "Deleted", "Your review has been deleted.");
 
             refreshReviews();
-            checkIfUserHasReview(); // Will reset to "Add Mode"
+            checkIfUserHasReview(); // reset to "Add Mode"
         }
     }
 
