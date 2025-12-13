@@ -18,16 +18,17 @@ public class CourseReviewsApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        switchScene("LoginView.fxml");
+        switchScene("login.fxml");
         stage.setTitle("Course Reviews - Login");
         stage.show();
     }
 
-    public static void switchScene(String fxml){
+    public static <T> T switchScene(String fxml){
         try {
             FXMLLoader loader = new FXMLLoader(CourseReviewsApplication.class.getResource(fxml));
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            return loader.getController();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

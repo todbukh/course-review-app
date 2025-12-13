@@ -37,7 +37,11 @@ public class LoginController {
         if (user == null) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "Login Failed", "Please enter correct username and password!");
         }
-    }
+
+        CourseSearchController controller = CourseReviewsApplication.switchScene("course-search.fxml");
+        controller.setLoggedInUser(user);
+
+        }
 
     @FXML
     public void onRegister(){
