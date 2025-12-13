@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 
 public class LoginController {
 
-    private final UserService userService = new UserService();
+    private UserService userService;
 
     @FXML
     private Button closeButton;
@@ -19,8 +19,6 @@ public class LoginController {
     private PasswordField passwordField;
     @FXML
     private Button loginButton;
-    @FXML
-    private Button registerButton;
 
     @FXML
     public void onClose() {
@@ -29,6 +27,10 @@ public class LoginController {
 
     @FXML
     public void onLogin() {
+        if (userService == null) {
+            userService = new UserService();
+        }
+
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -49,34 +51,10 @@ public class LoginController {
 
         CourseSearchController controller = CourseReviewsApplication.switchScene("course-search.fxml");
         controller.setLoggedInUser(user);
-
         }
 
     @FXML
     public void onRegister(){
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-
-        if (username.isEmpty()) {
-            AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Empty", "Please enter your username.");
-            return;
-        }
-        if (password.isEmpty()) {
-            AlertUtil.showAlert(Alert.AlertType.ERROR, "Password Empty", "Please enter your password.");
-            return;
-        }
-
-        UserService.UserCreateResult result = userService.createUser(username, password);
-        switch(result){
-            case FAILED_PASSWORD_TOO_SHORT:
-                AlertUtil.showAlert(Alert.AlertType.ERROR, "Password Error", "Password must be at least 8 characters!");
-                return;
-            case FAILED_USERNAME_TAKEN:
-                AlertUtil.showAlert(Alert.AlertType.ERROR, "Username Error", "Username is already taken!" );
-                return;
-            case SUCCESS:
-                AlertUtil.showAlert(Alert.AlertType.CONFIRMATION, "Success", "User Created Successfully!");
-                break;
-        }
+        CourseReviewsApplication.switchScene("register.fxml");
     }
 }
