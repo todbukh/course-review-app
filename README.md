@@ -3,7 +3,7 @@
 ## Authors
 1) Todd Burged, jfx8vc, [todbukh]
 2) Josh Riley, arv4xc, [joshriley22]
-3) Name, netid, [GitHub user name]
+3) Nate Stevenson, gdt2cf, [natestev]
 4) Kaixuan Zhang, cuz2xn, ne0ka1
 
 ## To Run
