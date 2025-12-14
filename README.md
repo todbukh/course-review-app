@@ -34,7 +34,7 @@ Database Layer
   * ```CourseReviewsController.java```
  
 
-### [Author 4 - replace this with their name]
+### Kaixuan Zhang
 
 * Built the Login and Register scene
 * Built the Course Search and My Reviews scene
