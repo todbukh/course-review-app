@@ -4,7 +4,7 @@
 1) Todd Burged, jfx8vc, [todbukh]
 2) Josh Riley, arv4xc, [joshriley22]
 3) Name, netid, [GitHub user name]
-4) Name, netid, [GitHub user name]
+4) Kaixuan Zhang, cuz2xn, ne0ka1
 
 ## To Run
 
@@ -32,14 +32,13 @@ Database Layer
 
 * Built the Course Reviews scene
   * ```CourseReviewsController.java```
-* 
  
 
 ### [Author 4 - replace this with their name]
 
-* Author 4 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Built the Login and Register scene
+* Built the Course Search and My Reviews scene
+* UI styling and visual polish ```style.css```
 
 ## Issues
 
