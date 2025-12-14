@@ -111,11 +111,13 @@ public class CourseSearchController {
                     tooltip.setText("No rating yet");
                     setTooltip(tooltip);
                 } else {
-                    int fullStars = (int) Math.floor(rating);
-                    StringBuilder sb = new StringBuilder();
-                    if (fullStars > 0) { sb.append("★".repeat(fullStars)); }
-                    if (rating - fullStars >= 0.5) { sb.append("☆"); }
-                    setText(sb.toString());
+//                    int fullStars = (int) Math.floor(rating);
+//                    StringBuilder sb = new StringBuilder();
+//                    if (fullStars > 0) { sb.append("★".repeat(fullStars)); }
+//                    if (rating - fullStars >= 0.5) { sb.append("☆");}
+//                    sb.append("  " + String.format("%.2f", rating));
+//                    setText(sb.toString());
+                    setText(String.format("%.2f", rating));
                     tooltip.setText(String.format("%.2f / 5.0", rating));
                     setTooltip(tooltip);
                 }
