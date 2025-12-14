@@ -17,7 +17,7 @@ List the primary contributions of each author. It is recommended to update this 
 ### Todd Burged
 
 The Logic Layer of the Three-Layer Architecture:
-  * ```ProfileService.java```
+  * ```UserService.java```
   * ```CourseService.java```
   * ```ReviewService.java```
 
