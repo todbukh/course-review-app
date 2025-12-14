@@ -45,7 +45,7 @@ public class Course {
             return false;
         }
         Course other = (Course)obj;
-        return this.courseNumber == other.courseNumber && this.subject.equals(other.subject);
+        return this.courseNumber == other.courseNumber && this.subject.equals(other.subject) && this.courseName.equals(other.courseName);
     }
 
     public static void insertCourse(Course course) {

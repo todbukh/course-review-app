@@ -24,7 +24,7 @@
 
     <center>
         <VBox styleClass="padded">
-            <TableView fx:id="reviewTable">
+            <TableView fx:id="reviewTable" VBox.vgrow="ALWAYS">
                 <placeholder>
                     <Label text="You haven't written any reviews yet"/>
                 </placeholder>

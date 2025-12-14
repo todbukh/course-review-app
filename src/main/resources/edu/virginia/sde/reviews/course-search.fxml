@@ -41,7 +41,7 @@
 
     <bottom>
         <VBox styleClass="padded">
-            <TableView fx:id="courseTable" prefHeight="480">
+            <TableView fx:id="courseTable" prefHeight="480" VBox.vgrow="ALWAYS">
                 <placeholder>
                     <Label text="No courses found"/>
                 </placeholder>
