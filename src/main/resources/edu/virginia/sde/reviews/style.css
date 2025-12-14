@@ -21,9 +21,22 @@
     -fx-spacing: 12;
 }
 
+/* ===== Label Design ===== */
 .label {
     -fx-font-size: 14px;
     -fx-text-fill: #3A4266;
+}
+
+.label.large {
+    -fx-font-size: 16px;
+}
+
+.label.small {
+    -fx-font-size: 12px;
+}
+
+.hyperlink.small {
+    -fx-font-size: 12px;
 }
 
 /* ===== Button Design ===== */

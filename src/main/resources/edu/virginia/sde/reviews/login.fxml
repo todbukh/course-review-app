@@ -35,8 +35,8 @@
             <Button text="Log In" fx:id="loginButton" onAction="#onLogin"/>
 
             <HBox spacing="5" alignment="CENTER">
-                <Label text="Don't have an account?" />
-                <Hyperlink text="Register here" onAction="#onRegister"/>
+                <Label text="Don't have an account?" styleClass="small"/>
+                <Hyperlink text="Register here" onAction="#onRegister" styleClass="small"/>
             </HBox>
         </VBox>
     </center>

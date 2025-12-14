@@ -229,7 +229,7 @@ public class CourseSearchController {
                 AlertUtil.showAlert(Alert.AlertType.ERROR, "Fail", "Course already exists!");
                 return;
             case SUCCESS:
-                AlertUtil.showAlert(Alert.AlertType.CONFIRMATION, "Success", "Course added successfully!");
+                AlertUtil.showAlert(Alert.AlertType.INFORMATION, "Success", "Course added successfully!");
                 refreshCourses();
                 break;
         }
