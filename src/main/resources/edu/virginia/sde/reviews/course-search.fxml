@@ -9,42 +9,49 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="edu.virginia.sde.reviews.CourseSearchController"
             prefHeight="720" prefWidth="1280">
+
     <top>
-        <VBox styleClass="spaced" alignment="CENTER">
-            <StackPane styleClass="header">
-                <Label text="Search Course" fx:id="titleLabel" styleClass="title"/>
-                <BorderPane>
-                    <right>
-                        <HBox styleClass="spaced">
-                            <Button text="My Reviews" styleClass="header-button"
-                                    fx:id="myReviewsButton" onAction="#onMyReviews"/>
-                            <Button text="Log Out" styleClass="header-button"
-                                    fx:id="logOutButton" onAction="#onLogout"/>
-                        </HBox>
-                    </right>
-                </BorderPane>
-            </StackPane>
-            <GridPane styleClass="padded" hgap="10" vgap="12" alignment="CENTER">
-                <Label text="Subject" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                <Label text="Number" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                <Label text="Title" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                <TextField fx:id="subjectField" promptText="Subject" prefColumnCount="6" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <TextField fx:id="numberField" promptText="Number" prefColumnCount="6" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                <TextField fx:id="titleField" promptText="Title" prefColumnCount="16" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-                <Button text="Search" fx:id="primaryButton" onAction="#onPrimary" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
-                <Button text="+ Add Course" styleClass="secondary" fx:id="secondaryButton" onAction="#onSecondary" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            </GridPane>
-        </VBox>
+        <StackPane styleClass="header">
+            <Label text="Search Course" fx:id="titleLabel" styleClass="title"/>
+            <BorderPane>
+                <right>
+                    <HBox styleClass="spaced">
+                        <Button text="My Reviews" styleClass="header-button"
+                                fx:id="myReviewsButton" onAction="#onMyReviews"/>
+                        <Button text="Log Out" styleClass="header-button"
+                                fx:id="logOutButton" onAction="#onLogout"/>
+                    </HBox>
+                </right>
+            </BorderPane>
+        </StackPane>
     </top>
 
     <center>
-        <TableView fx:id="courseTable">
-            <columns>
-                <TableColumn text="Subject" fx:id="subjectCol"/>
-                <TableColumn text="Number" fx:id="numberCol"/>
-                <TableColumn text="Title" fx:id="titleCol" prefWidth="270"/>
-                <TableColumn text="Avg Rating" fx:id="ratingCol"/>
-            </columns>
-        </TableView>
+        <GridPane hgap="10" vgap="12" alignment="CENTER">
+            <Label text="Subject" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Label text="Number" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Title" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+            <TextField fx:id="subjectField" promptText="Subject" prefColumnCount="6" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="numberField" promptText="Number" prefColumnCount="6" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <TextField fx:id="titleField" promptText="Title" prefColumnCount="16" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+            <Button text="Search" fx:id="primaryButton" onAction="#onPrimary" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+            <Button text="+ Add Course" styleClass="secondary" fx:id="secondaryButton" onAction="#onSecondary" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        </GridPane>
     </center>
+
+    <bottom>
+        <VBox styleClass="padded">
+            <TableView fx:id="courseTable" prefHeight="480">
+                <placeholder>
+                    <Label text="No courses found"/>
+                </placeholder>
+                <columns>
+                    <TableColumn text="Subject" fx:id="subjectCol"/>
+                    <TableColumn text="Number" fx:id="numberCol"/>
+                    <TableColumn text="Title" fx:id="titleCol" minWidth="240"/>
+                    <TableColumn text="Avg Rating" fx:id="ratingCol"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </bottom>
 </BorderPane>

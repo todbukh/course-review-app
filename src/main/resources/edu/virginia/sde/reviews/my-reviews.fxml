@@ -23,15 +23,20 @@
     </top>
 
     <center>
-        <TableView fx:id="reviewTable">
-            <columns>
-                <TableColumn text="Subject" fx:id="subjectCol"/>
-                <TableColumn text="Number" fx:id="numberCol"/>
-                <TableColumn text="Title" fx:id="titleCol" />
-                <TableColumn text="Rating" fx:id="ratingCol"/>
-                <TableColumn text="Comment" fx:id="commentCol"/>
-            </columns>
-        </TableView>
+        <VBox styleClass="padded">
+            <TableView fx:id="reviewTable">
+                <placeholder>
+                    <Label text="You haven't written any reviews yet"/>
+                </placeholder>
+                <columns>
+                    <TableColumn text="Subject" fx:id="subjectCol" maxWidth="160"/>
+                    <TableColumn text="Number" fx:id="numberCol" maxWidth="160"/>
+                    <TableColumn text="Title" fx:id="titleCol" minWidth="240"/>
+                    <TableColumn text="Rating" fx:id="ratingCol" maxWidth="160"/>
+                    <TableColumn text="Comment" fx:id="commentCol" minWidth="480"/>
+                </columns>
+            </TableView>
+        </VBox>
     </center>
 
 </BorderPane>

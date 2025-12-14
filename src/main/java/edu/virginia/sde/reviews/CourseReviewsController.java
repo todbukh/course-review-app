@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.util.StringConverter;
 
 public class CourseReviewsController {
 
@@ -19,9 +20,9 @@ public class CourseReviewsController {
     @FXML
     public TableColumn<Review, Integer> ratingCol;
     @FXML
-    public TableColumn<Review, String> timestampCol;
-    @FXML
     public TableColumn<Review, String> commentCol;
+    @FXML
+    public TableColumn<Review, String> timestampCol;
 
     @FXML
     public ChoiceBox<Integer> ratingChoiceBox;
@@ -45,11 +46,20 @@ public class CourseReviewsController {
 
     public void initialize() {
         ratingChoiceBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
+        ratingChoiceBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Integer rating) {
+                return rating == null ? "" : "★".repeat(rating);
+            }
 
-        // 1. Setup Table Columns
-        ratingCol.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().getRating()));
-        timestampCol.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getTimestamp()));
-        commentCol.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getComment()));
+            @Override
+            public Integer fromString(String string) {
+                return string.length(); // not really used, but required
+            }
+        });
+
+        setupTable();
+        setupColumns();
 
         reviewTable.setItems(reviewsData);
 
@@ -60,6 +70,38 @@ public class CourseReviewsController {
                 resetFormState();
             }
         });
+    }
+
+    private void setupTable() {
+        reviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        ratingCol.setStyle("-fx-alignment: CENTER;");
+        commentCol.setStyle("-fx-alignment: CENTER_LEFT; -fx-padding: 0 0 0 10");
+        timestampCol.setStyle("-fx-alignment: CENTER;");
+    }
+
+    private void setupColumns() {
+        ratingCol.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().getRating()));
+        ratingCol.setCellFactory(col -> createStarCell());
+        commentCol.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getComment()));
+        timestampCol.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getTimestamp()));
+    }
+
+    private TableCell<Review, Integer> createStarCell() {
+        return new TableCell<>() {
+            private final Tooltip tooltip = new Tooltip();
+            @Override
+            protected void updateItem(Integer rating, boolean empty) {
+                super.updateItem(rating, empty);
+                if (empty) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    setText("★".repeat(rating));
+                    tooltip.setText(rating + " / 5");
+                    setTooltip(tooltip);
+                }
+            }
+        };
     }
 
     public void setContext(User user, Course course) {

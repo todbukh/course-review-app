@@ -1,5 +1,6 @@
 package edu.virginia.sde.reviews;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -48,7 +49,7 @@ public class CourseSearchController {
     @FXML
     private TableColumn<Course, String> titleCol;
     @FXML
-    private TableColumn<Course, String> ratingCol;
+    private TableColumn<Course, Double> ratingCol;
 
     @FXML
     private Button myReviewsButton;
@@ -57,10 +58,29 @@ public class CourseSearchController {
 
     @FXML
     public void initialize() {
+        setupTable();
+        setupActions();
+    }
 
-        Label placeholder = new Label("No courses found");
-        courseTable.setPlaceholder(placeholder);
+    public void setLoggedInUser(User user) {
+        this.loggedUser = user;
+        this.reviewService = new ReviewService(user);
+        setupColumns();
+        refreshCourses();
+        Platform.runLater(() -> {
+            courseTable.refresh();
+        });
+    }
 
+    private void setupTable() {
+        courseTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        subjectCol.setStyle("-fx-alignment: CENTER;");
+        numberCol.setStyle("-fx-alignment: CENTER;");
+        titleCol.setStyle("-fx-alignment: CENTER;");
+        ratingCol.setStyle("-fx-alignment: CENTER;");
+    }
+
+    private void setupColumns() {
         subjectCol.setCellValueFactory(
                 cell -> new ReadOnlyStringWrapper(cell.getValue().getSubject())
         );
@@ -70,7 +90,40 @@ public class CourseSearchController {
         titleCol.setCellValueFactory(
                 cell -> new ReadOnlyStringWrapper(cell.getValue().getCourseName())
         );
+        ratingCol.setCellValueFactory(cell -> {
+            double r = reviewService.getCourseAverageRating(cell.getValue());
+            return new ReadOnlyObjectWrapper<>(r);
+        });
+        ratingCol.setCellFactory(col -> createStarCell());
+    }
 
+    private TableCell<Course, Double> createStarCell() {
+        return new TableCell<>() {
+            private final Tooltip tooltip = new Tooltip();
+            @Override
+            protected void updateItem(Double rating, boolean empty) {
+                super.updateItem(rating, empty);
+                if (empty) {
+                    setText(null);
+                    setTooltip(null);
+                } else if (rating == 0.0) {
+                    setText("N/A");
+                    tooltip.setText("No rating yet");
+                    setTooltip(tooltip);
+                } else {
+                    int fullStars = (int) Math.floor(rating);
+                    StringBuilder sb = new StringBuilder();
+                    if (fullStars > 0) { sb.append("★".repeat(fullStars)); }
+                    if (rating - fullStars >= 0.5) { sb.append("☆"); }
+                    setText(sb.toString());
+                    tooltip.setText(String.format("%.2f / 5.0", rating));
+                    setTooltip(tooltip);
+                }
+            }
+        };
+    }
+
+    private void setupActions() {
         courseTable.setRowFactory(tv -> {
             TableRow<Course> row = new TableRow<>();
 
@@ -82,20 +135,6 @@ public class CourseSearchController {
             });
 
             return row;
-        });
-    }
-
-    public void setLoggedInUser(User user) {
-        this.loggedUser = user;
-        this.reviewService = new ReviewService(user);
-        initRatingColumn();
-        refreshCourses();
-    }
-
-    private void initRatingColumn() {
-        ratingCol.setCellValueFactory(cell -> {
-            double r = reviewService.getCourseAverageRating(cell.getValue());
-            return new ReadOnlyObjectWrapper<>(r < 0 ? null : r).asString();
         });
     }
 
@@ -190,7 +229,7 @@ public class CourseSearchController {
                 AlertUtil.showAlert(Alert.AlertType.ERROR, "Fail", "Course already exists!");
                 return;
             case SUCCESS:
-                AlertUtil.showAlert(Alert.AlertType.CONFIRMATION, "Success", "Course added successfully!");
+                AlertUtil.showAlert(Alert.AlertType.INFORMATION, "Success", "Course added successfully!");
                 refreshCourses();
                 break;
         }
