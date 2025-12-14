@@ -42,7 +42,7 @@
             <columns>
                 <TableColumn text="Subject" fx:id="subjectCol"/>
                 <TableColumn text="Number" fx:id="numberCol"/>
-                <TableColumn text="Title" fx:id="titleCol"/>
+                <TableColumn text="Title" fx:id="titleCol" prefWidth="270"/>
                 <TableColumn text="Avg Rating" fx:id="ratingCol"/>
             </columns>
         </TableView>
