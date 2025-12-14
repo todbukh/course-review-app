@@ -36,10 +36,13 @@
     </top>
     <center>
         <TableView fx:id="reviewTable" BorderPane.alignment="CENTER">
+            <placeholder>
+                <Label text="No reviews for this course"/>
+            </placeholder>
             <columns>
-                <TableColumn fx:id="ratingCol" prefWidth="100.0" text="Rating" />
-                <TableColumn fx:id="timestampCol" prefWidth="150.0" text="Date" />
-                <TableColumn fx:id="commentCol" prefWidth="600.0" text="Comment" />
+                <TableColumn fx:id="ratingCol" maxWidth="160.0" text="Rating" />
+                <TableColumn fx:id="commentCol" minWidth="480.0" text="Comment" />
+                <TableColumn fx:id="timestampCol" text="Date" />
             </columns>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -54,7 +57,7 @@
             <Label fx:id="interactionHeaderLabel" text="Write a Review" />
             <HBox alignment="CENTER_LEFT" spacing="15.0">
                 <Label text="Rating:" />
-                <ChoiceBox fx:id="ratingChoiceBox" prefWidth="50.0" />
+                <ChoiceBox fx:id="ratingChoiceBox" prefWidth="120" />
             </HBox>
             <TextArea fx:id="commentArea" prefHeight="80.0" promptText="Write your experience here (optional)..." wrapText="true" />
             <HBox alignment="CENTER_LEFT" spacing="15.0">

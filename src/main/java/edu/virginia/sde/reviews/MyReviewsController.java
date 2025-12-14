@@ -48,18 +48,12 @@ public class MyReviewsController {
     }
 
     private void setupTable() {
-        Label placeholder = new Label("You haven't written any reviews yet");
-        reviewTable.setPlaceholder(placeholder);
         reviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        subjectCol.setMaxWidth(160);
         subjectCol.setStyle("-fx-alignment: CENTER;");
-        numberCol.setMaxWidth(160);
         numberCol.setStyle("-fx-alignment: CENTER;");
-        titleCol.setMinWidth(240);
         titleCol.setStyle("-fx-alignment: CENTER;");
         ratingCol.setStyle("-fx-alignment: CENTER;");
-        ratingCol.setMaxWidth(160);
-        commentCol.setMinWidth(480);
+        commentCol.setStyle("-fx-alignment: CENTER_LEFT; -fx-padding: 0 0 0 10");
     }
 
     private void setupColumns() {
@@ -83,11 +77,18 @@ public class MyReviewsController {
 
     private TableCell<Review, Integer> createStarCell() {
         return new TableCell<>() {
+            private final Tooltip tooltip = new Tooltip();
             @Override
             protected void updateItem(Integer rating, boolean empty) {
                 super.updateItem(rating, empty);
-                setText("★".repeat(rating));
-                setTooltip(new Tooltip(String.format("%d / 5", rating)));
+                if (empty) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    setText("★".repeat(rating));
+                    tooltip.setText(rating + " / 5");
+                    setTooltip(tooltip);
+                }
             }
         };
     }

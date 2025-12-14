@@ -106,3 +106,8 @@
 .table-row-cell:filled:hover {
     -fx-background-color: #DADADA;
 }
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #E57200;
+    -fx-text-fill: white;
+}

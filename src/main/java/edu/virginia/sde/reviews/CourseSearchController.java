@@ -73,13 +73,9 @@ public class CourseSearchController {
     }
 
     private void setupTable() {
-        Label placeholder = new Label("No courses found");
-        courseTable.setPlaceholder(placeholder);
         courseTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
         subjectCol.setStyle("-fx-alignment: CENTER;");
         numberCol.setStyle("-fx-alignment: CENTER;");
-        titleCol.setMinWidth(200);
         titleCol.setStyle("-fx-alignment: CENTER;");
         ratingCol.setStyle("-fx-alignment: CENTER;");
     }
@@ -96,29 +92,33 @@ public class CourseSearchController {
         );
         ratingCol.setCellValueFactory(cell -> {
             double r = reviewService.getCourseAverageRating(cell.getValue());
-            return new ReadOnlyObjectWrapper<>(r < 0 ? null : r);
+            return new ReadOnlyObjectWrapper<>(r);
         });
         ratingCol.setCellFactory(col -> createStarCell());
     }
 
     private TableCell<Course, Double> createStarCell() {
         return new TableCell<>() {
+            private final Tooltip tooltip = new Tooltip();
             @Override
             protected void updateItem(Double rating, boolean empty) {
                 super.updateItem(rating, empty);
-
-                if (empty || rating == null || rating == 0.0) {
+                if (empty) {
+                    setText(null);
+                    setTooltip(null);
+                } else if (rating == 0.0) {
                     setText("N/A");
-                    setTooltip(new Tooltip("No rating yet"));
-                    return;
+                    tooltip.setText("No rating yet");
+                    setTooltip(tooltip);
+                } else {
+                    int fullStars = (int) Math.floor(rating);
+                    StringBuilder sb = new StringBuilder();
+                    if (fullStars > 0) { sb.append("★".repeat(fullStars)); }
+                    if (rating - fullStars >= 0.5) { sb.append("☆"); }
+                    setText(sb.toString());
+                    tooltip.setText(String.format("%.2f / 5.0", rating));
+                    setTooltip(tooltip);
                 }
-
-                int fullStars = (int) Math.floor(rating);
-                StringBuilder sb = new StringBuilder();
-                if (fullStars > 0) { sb.append("★".repeat(fullStars)); }
-                if (rating - fullStars >= 0.5) { sb.append("☆"); }
-                setText(sb.toString());
-                setTooltip(new Tooltip(String.format("%.2f / 5.0", rating)));
             }
         };
     }

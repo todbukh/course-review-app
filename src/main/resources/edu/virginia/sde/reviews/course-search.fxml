@@ -41,11 +41,14 @@
 
     <bottom>
         <VBox styleClass="padded">
-            <TableView fx:id="courseTable" prefHeight="470">
+            <TableView fx:id="courseTable" prefHeight="480">
+                <placeholder>
+                    <Label text="No courses found"/>
+                </placeholder>
                 <columns>
                     <TableColumn text="Subject" fx:id="subjectCol"/>
                     <TableColumn text="Number" fx:id="numberCol"/>
-                    <TableColumn text="Title" fx:id="titleCol"/>
+                    <TableColumn text="Title" fx:id="titleCol" minWidth="240"/>
                     <TableColumn text="Avg Rating" fx:id="ratingCol"/>
                 </columns>
             </TableView>
