@@ -8,8 +8,8 @@
 
 ## To Run
 
-[Add a brief description of which .java file to run, and what vm arguments are needed]
-
+To run this program, run ```.gradlew run``` in Terminal from the project's root directory.
+No VM arguments are necessary.
 ## Contributions
 
 List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
@@ -41,4 +41,4 @@ Database Layer
 
 ## Issues
 
-List any known issues (bugs, incorrect behavior, etc.) at the time of submission.
+No issues encountered.
