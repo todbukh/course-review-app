@@ -23,15 +23,17 @@
     </top>
 
     <center>
-        <TableView fx:id="reviewTable">
-            <columns>
-                <TableColumn text="Subject" fx:id="subjectCol"/>
-                <TableColumn text="Number" fx:id="numberCol"/>
-                <TableColumn text="Title" fx:id="titleCol" />
-                <TableColumn text="Rating" fx:id="ratingCol"/>
-                <TableColumn text="Comment" fx:id="commentCol"/>
-            </columns>
-        </TableView>
+        <VBox styleClass="padded">
+            <TableView fx:id="reviewTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn text="Subject" fx:id="subjectCol"/>
+                    <TableColumn text="Number" fx:id="numberCol"/>
+                    <TableColumn text="Title" fx:id="titleCol" />
+                    <TableColumn text="Rating" fx:id="ratingCol"/>
+                    <TableColumn text="Comment" fx:id="commentCol"/>
+                </columns>
+            </TableView>
+        </VBox>
     </center>
 
 </BorderPane>

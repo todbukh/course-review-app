@@ -1,4 +1,5 @@
-/* UVA Color PALETTE: https://brand.virginia.edu/brand-essentials/color */
+/* Uses UVA Color PALETTE: https://brand.virginia.edu/brand-essentials/color */
+/* created by Kaixuan Zhang */
 
 .uva-themed {
     -fx-base: #232D4B;     /* UVA Blue */
@@ -91,6 +92,15 @@
 /* ===== Table Design ===== */
 .table-view {
     -fx-font-size: 13px;
+    -fx-border-color: #DADADA;
+}
+
+.table-row-cell {
+    -fx-cell-size: 32px;
+}
+
+.table-view .column-header-background {
+    -fx-min-height: 42px;
 }
 
 .table-row-cell:filled:hover {

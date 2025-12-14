@@ -5,9 +5,7 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.util.List;
 
@@ -44,7 +42,27 @@ public class MyReviewsController {
     }
 
     private void initReviews() {
+        setupTable();
+        setupColumns();
+        setupActions();
+    }
 
+    private void setupTable() {
+        Label placeholder = new Label("You haven't written any reviews yet");
+        reviewTable.setPlaceholder(placeholder);
+        reviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        subjectCol.setMaxWidth(160);
+        subjectCol.setStyle("-fx-alignment: CENTER;");
+        numberCol.setMaxWidth(160);
+        numberCol.setStyle("-fx-alignment: CENTER;");
+        titleCol.setMinWidth(240);
+        titleCol.setStyle("-fx-alignment: CENTER;");
+        ratingCol.setStyle("-fx-alignment: CENTER;");
+        ratingCol.setMaxWidth(160);
+        commentCol.setMinWidth(480);
+    }
+
+    private void setupColumns() {
         subjectCol.setCellValueFactory(
                 cell -> new ReadOnlyStringWrapper(cell.getValue().getCourse().getSubject())
         );
@@ -57,10 +75,24 @@ public class MyReviewsController {
         ratingCol.setCellValueFactory(
                 cell -> new ReadOnlyObjectWrapper<>(cell.getValue().getRating())
         );
+        ratingCol.setCellFactory(col -> createStarCell());
         commentCol.setCellValueFactory(
                 cell -> new ReadOnlyStringWrapper(cell.getValue().getComment())
         );
+    }
 
+    private TableCell<Review, Integer> createStarCell() {
+        return new TableCell<>() {
+            @Override
+            protected void updateItem(Integer rating, boolean empty) {
+                super.updateItem(rating, empty);
+                setText("★".repeat(rating));
+                setTooltip(new Tooltip(String.format("%d / 5", rating)));
+            }
+        };
+    }
+
+    private void setupActions() {
         reviewTable.setRowFactory(tv -> {
             TableRow<Review> row = new TableRow<>();
 
