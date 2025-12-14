@@ -30,7 +30,9 @@ Database Layer
 
 ### Nate Stevenson
 
-* Built the Course Reviews UI and ```CourseReviewsController.java```
+* Built the Course Reviews scene
+  * ```CourseReviewsController.java```
+* 
  
 
 ### [Author 4 - replace this with their name]
