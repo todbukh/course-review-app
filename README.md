@@ -1,45 +1,34 @@
-# Homework 6 - Course Review Application
+# Course Review App
 
-## Authors
-1) Todd Burged, jfx8vc, [todbukh]
-2) Josh Riley, arv4xc, [joshriley22]
-3) Nate Stevenson, gdt2cf, [natestev]
-4) Kaixuan Zhang, cuz2xn, [ne0ka1]
+A JavaFX desktop application that allows students to search for courses and read or submit peer reviews. Built with a three-layer architecture (UI, logic, and data) and backed by a SQLite database. This project was completed as an assignment for CS 3140 (Software Development Essentials) in Fall 2025 at the University of Virginia.
 
-## To Run
+## Tech Stack
 
-To run this program, run ```.gradlew run``` in Terminal from the project's root directory.
-No VM arguments are necessary.
-## Contributions
+- **Java / JavaFX** — UI and application logic
+- **SQLite** — local persistent storage
+- **Gradle** — build and dependency management
+- **JUnit Jupiter / Mockito** — unit and mock testing
 
-List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
+## Architecture
 
-### Todd Burged
+The app follows a three-layer design:
 
-The Logic Layer of the Three-Layer Architecture:
-  * ```UserService.java```
-  * ```CourseService.java```
-  * ```ReviewService.java```
+- **UI Layer** — JavaFX controllers for Login/Register, Course Search, Course Reviews, and My Reviews scenes
+- **Logic Layer** — `UserService`, `CourseService`, and `ReviewService` handle business rules
+- **Data Layer** — `User`, `Course`, and `Review` models with corresponding unit tests
 
-### Josh Riley
+## Getting Started
 
-Database Layer
-* ```Course.java & CourseTest.java```
-* ```Review.java & ReviewTest.java```
-* ```User.java & UserTest.java```
+```bash
+./gradlew run
+```
 
-### Nate Stevenson
+No VM arguments needed.
 
-* Built the Course Reviews scene
-  * ```CourseReviewsController.java```
- 
+## My Contributions
 
-### Kaixuan Zhang
+I was responsible for the entire **Logic Layer**:
 
-* Built the Login and Register scene
-* Built the Course Search and My Reviews scene
-* UI styling and visual polish ```style.css```
-
-## Issues
-
-No issues encountered.
+- `UserService.java` — user authentication and account management
+- `CourseService.java` — course lookup and data access logic
+- `ReviewService.java` — review creation, retrieval, and validation
