@@ -19,11 +19,17 @@ The app follows a three-layer design:
 
 ## Getting Started
 
+**Prerequisites:** Java 17 or higher
+
 ```bash
+# macOS / Linux
 ./gradlew run
+
+# Windows
+gradlew.bat run
 ```
 
-No VM arguments needed.
+The SQLite database comes pre-populated with sample courses and reviews.
 
 ## My Contributions
 
