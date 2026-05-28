@@ -28,9 +28,6 @@ The app follows a three-layer design:
 # Windows
 gradlew.bat run
 ```
-
-The SQLite database comes pre-populated with sample courses and reviews.
-
 ## My Contributions
 
 I was responsible for the entire **Logic Layer**:
